@@ -337,6 +337,8 @@
                 
                 </button>
                 <button class="export" id="export1" onclick="exportGraph(1);">EXPORT</button>
+                
+                <button class="saveButton" style="margin-left: 5px; cursor:pointer;" id="source1" onclick="displaySource(1)">SOURCE</button>
 
             </div>
 
@@ -347,6 +349,8 @@
                 <button class="saveButton" id="save2" draggable="true" ondragstart="drag(event, 'graph2')">SAVE GRAPH 2
                     </button>
                 <button class="export" id="export2" onclick="exportGraph(2);">EXPORT</button>
+                
+                <button class="saveButton" style="margin-left: 5px; cursor:pointer;" id="source2" onclick="displaySource(2)">SOURCE</button>
 
             </div>
         </div>
@@ -377,7 +381,7 @@
                         </a>
                     </div>
                     <br>
-                        <button class="customize" id="cust1" onclick="customize(1)"> Customize </button>
+                        <button class="customize" id="cust1" onmouseover="showToolTip(1)" onmouseleave="showToolTip(1)" onclick="customize(1)"> Customize </button>
                 </div>
                 
 
@@ -394,7 +398,7 @@
                         </a>
                     </div>
                     <br>
-                        <button class="customize" id="cust2" onclick="customize(2)"> Customize </button>
+                        <button class="customize" id="cust2" onmouseover="showToolTip(2)" onmouseleave="showToolTip(2)" onclick="customize(2)"> Customize </button>
                 </div>
 
                 <div class="frame">
@@ -410,7 +414,7 @@
                         </a>
                     </div>
                     <br>
-                        <button class="customize" id="cust3" onclick="customize(3)"> Customize </button>
+                        <button class="customize" id="cust3" onmouseover="showToolTip(3)" onmouseleave="showToolTip(3)" onclick="customize(3)"> Customize </button>
                 </div>
 
                 <div class="frame" id="hide1">
@@ -426,7 +430,7 @@
                         </a>
                     </div>
                     <br>
-                        <button class="customize" id="cust4" onclick="customize(4)"> Customize </button>
+                        <button class="customize" id="cust4" onmouseover="showToolTip(4)" onmouseleave="showToolTip(4)" onclick="customize(4)"> Customize </button>
                 </div>
 
                 <div class="frame" id="hide2">
@@ -442,7 +446,7 @@
                         </a>
                     </div>
                     <br>
-                        <button class="customize" id="cust5" onclick="customize(5)"> Customize </button>
+                        <button class="customize" id="cust5" onmouseover="showToolTip(5)" onmouseleave="showToolTip(5)" onclick="customize(5)"> Customize </button>
                 </div>
             </div>
             <div class="pillar">
@@ -459,7 +463,7 @@
                         </a>
                     </div>
                     <br>
-                        <button class="customize" id="cust6" onclick="customize(6)"> Customize </button>
+                        <button class="customize" id="cust6" onmouseover="showToolTip(6)" onmouseleave="showToolTip(6)" onclick="customize(6)"> Customize </button>
                 </div>
 
                 <div class="frame">
@@ -475,7 +479,7 @@
                         </a>
                     </div>
                     <br>
-                        <button class="customize" id="cust7" onclick="customize(7)"> Customize </button>
+                        <button class="customize" id="cust7" onmouseover="showToolTip(7)" onmouseleave="showToolTip(7)" onclick="customize(7)"> Customize </button>
                 </div>
 
                 <div class="frame">
@@ -487,11 +491,11 @@
                             <div class="hoverTip">delete</div>
                         </a>
                         <a id="swap8" class="swap" draggable="true" ondragstart="drag(event, 'saved8')">&#x21c4;
-                            <div class="hoverTip">transfer (drag & drop)</div>
+     M                       <div class="hoverTip">transfer (drag & drop)</div>
                         </a>
                     </div>
                     <br>
-                        <button class="customize" id="cust8" onclick="customize(8)"> Customize </button>
+                        <button class="customize" id="cust8" onmouseover="showToolTip(8)" onmouseleave="showToolTip(8)" onclick="customize(8)"> Customize </button>
                 </div>
 
                 <div class="frame" id="hide3">
@@ -507,7 +511,7 @@
                         </a>
                     </div>
                     <br>
-                        <button class="customize" id="cust9" onclick="customize(9)"> Customize </button>
+                        <button class="customize" id="cust9" onmouseover="showToolTip(9)" onmouseleave="showToolTip(9)" onclick="customize(9)"> Customize </button>
                 </div>
 
                 <div class="frame" id="hide4">
@@ -523,7 +527,7 @@
                         </a>
                     </div>
                     <br>
-                        <button class="customize" id="cust10" onclick="customize(10)"> Customize </button>
+                        <button class="customize" id="cust10" onmouseover="showToolTip(10)" onmouseleave="showToolTip(10)" onclick="customize(10)"> Customize </button>
                 </div>
             </div>
 
@@ -562,6 +566,16 @@
         
         tippy('#save2', {
            content: "Drag to an empty save slot to the right",
+           placement: "bottom",
+        });
+        
+        tippy('#source1', {
+           content: "View the source for the database",
+           placement: "bottom",
+        });
+        
+        tippy('#source2', {
+           content: "View the source for the database",
            placement: "bottom",
         });
         

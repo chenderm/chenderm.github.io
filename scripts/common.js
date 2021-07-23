@@ -155,7 +155,8 @@ var database_dict = {
     'Battle Related Deaths in State Based Conflicts',
     'Nuclear Warhead Inventory in Nuclear Powers',
   ],
-  Economies: ['GDP',
+  Economies: [
+              'GDP',
               'GDP Per Capita',
               'Economic Freedom Scores',
               'Poverty Threshold',
@@ -169,6 +170,93 @@ var database_dict = {
     'CO2 Emissions Cumulative',
     'CO2 Emissions Cumulative Percentages',
   ],
+};
+
+//holds the source information for each database
+var source_dict = {
+    
+      'Populations' : "Gapminder, HYDE (2016) and United Nations Population Division (2019). Total Population Retrieved from http://www.gapminder.org/ and https://www.gapminder.org/data/documentation/gd003/",
+    
+    "Population Female Percentage": "World Bank – World Development Indicators. Population, Female (% of total) Retrieved from http://data.worldbank.org/data-catalog/world-development-indicators",
+    
+    "Population Female Percentage at Birth": "World Bank – World Development Indicators. Population, Female (% of total) Retrieved from http://data.worldbank.org/data-catalog/world-development-indicators",
+    
+    
+    'Life Expectancy - Continents' : "James C. Riley (2005) - Estimates of Regional and Global Life Expectancy, 1800-2001. Life Expectancy. Retrieved from https://www.lifetable.de/RileyBib.pdf" ,
+    
+    
+    'Median Age' : "UN Population Division, World Population Prospects (2017). UN Population Division (Median Age) Retrieved from https://esa.un.org/unpd/wpp/Download/Standard/Population/",
+    
+    
+    'Births': "United Nations, Department of Economic and Social Affairs, Population Division (2019). Annually Interpolated Demographic indicators - Births (Thousands) Retrieved from https://population.un.org/wpp2019/Download/Standard/Interpolated/",
+    
+    
+    'Births Per Woman': "United Nations, Department of Economic and Social Affairs, Population Division (2019). Annually Interpolated Demographic Indicators - Total Fertility (Live Births per Woman) Retrieved from https://population.un.org/wpp2019/Download/Standard/Interpolated/",
+    
+    
+    'Births Per 1000 People': "Brian Mitchell (April 2013). International Historical Statistics (Births per 1,000) Retrieved from http://www.palgrave.com/us/book/9780230005150",
+    
+    
+    'Child Deaths': "World Bank - World Development Indicators. Number of under-five deaths. Retrieved from http://data.worldbank.org/data-catalog/world-development-indicators",
+    
+    
+    'Child Mortality Rates': "World Bank - World Development Indicators. Mortality Rate, Under-5 (Per 1,000 Live Births) Retrieved from http://data.worldbank.org/data-catalog/world-development-indicators",
+    
+    
+    'Survival Rate to Age 65 - Male': "World Bank - World Development Indicators. World Population Prospects (2017). Survival to age 65, Male (% of Cohort). Retrieved from https://data.worldbank.org/data-catalog/world-development-indicatiors",
+    
+    
+    'Survival Rate to Age 65 - Female': "World Bank - World Development Indicators. World Population Prospects (2017). Survival to age 65, Female (% of Cohort). Retrieved from https://data.worldbank.org/data-catalog/world-development-indicatiors",
+    
+    
+    'Projected Race & Hispanic Origin': "https://www.census.gov/data/tables/2017/demo/popproj/2017-summary-tables.html",
+    
+    
+    'Military Personnel': "COW Project. Military Personnel (2017). Retrieved from http://www.correlatesofwar.org/data-sets/national-material-capabilities",
+    
+    
+    'Military Personnel Percent of Population': "COW Project. Military Personnel as a share of total population (COW(2017)). Retrieved from http://www.correlatesofwar.org/data-sets/national-material-capabilities",
+    
+    //no source for military spending
+//    'Military Spending': "",
+    
+    
+    'Military Spending Percent of GDP': "World Bank - World Development Indicators. Military Expenditure (% of GDP). Retrieved from http://data.worldbank.org/data-catalog/world-development-indicators",
+    
+    //no source
+//    'Military Spending in thousands of US dollars',
+    
+    'Battle Related Deaths in State Based Conflicts': "https://ourworldindata.org/war-and-peace (War and Peace After 1945)",
+    
+    'Nuclear Warhead Inventory in Nuclear Powers': " https://ourworldindata.org/nuclear-weapons (Stockpiles of nuclear weapons)",
+    
+    
+    'GDP' : "Feenstra, Robert C., Robert Inklaar and Marcel P. Timmer (2015) “The Next Generation of the Penn World Table”. Output-side Real GDP Per Capita. Retrieved from https://www.rug.nl/ggdc/productivity/pwt/",
+    
+    'GDP Per Capita': "Feenstra, Robert C., Robert Inklaar and Marcel P. Timmer (2015) “The Next Generation of the Penn World Table”. Output-side Real GDP Per Capita. Retrieved from https://www.rug.nl/ggdc/productivity/pwt/",
+    
+    'Economic Freedom Scores': "Fraser Institute. Economic Freedom of the World. Retrieved from https://www.fraserinstitute.org/economic-freedom/dataset",
+    
+    'Poverty Threshold': "https://www.census.gov/library/publications/2020/demo/p60-270.html (Poverty Thresholds: 2019)",
+    
+    'Registered Mobile Money Accounts' : " https://ourworldindata.org/technology-adoption (Mobile money accounts by region)",
+    
+    
+    'CO2 Emissions': "International Energy Agency, IEA World Energy Balances 2019 and 2006 IPCC Guidelines for Greenhouse Gas Inventories, last accessed June 2020 http://data.un.org/",
+    
+    
+    'CO2 Emissions Per Capita': "International Energy Agency, IEA World Energy Balances 2019 and 2006 IPCC Guidelines for Greenhouse Gas Inventories, last accessed June 2020 http://data.un.org/",
+    
+    //no source
+//    'CO2 Emissions Percentages',
+    
+    'CO2 Emissions Cumulative': "Our World in Data based on Global Carbon Project. Cumulative CO2 Emissions.",
+    
+    //no source
+//    'CO2 Emissions Cumulative Percentages',
+    
+    
+    
 };
 
 //graphs are defined here to have easier access
@@ -1591,3 +1679,25 @@ window.addEventListener('beforeunload', function(event) {
     sendData(200, -1);
     
       });
+
+
+//displays an alert with the source of the database
+function displaySource(graphNum){
+    
+    var database = document.getElementById("database" + graphNum);
+    
+    if(source_dict[database.value] == undefined){
+        alert("No Source Found For: " + database.value);
+    } else {
+        
+        alert(database.value + " Database Source: \n" + source_dict[database.value]);
+        
+        
+    }
+    
+    
+    
+    
+}
+
+
