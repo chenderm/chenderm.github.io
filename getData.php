@@ -9,7 +9,7 @@ try{
     $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     $dbh->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
 
-    $result = $dbh->prepare("SELECT * FROM export");//error here
+    $result = $dbh->prepare("SELECT * FROM export");
     $result -> execute();
 
     echo "numrows: ";

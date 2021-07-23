@@ -1591,7 +1591,11 @@ function configureCustomDV4L(id){
 
 function useCustomDatabases(databases){
     
-//    database_dict = databases;
+    database_dict = {
+        
+        "Instructor Selected Databases" : databases,
+        
+    };
     
 
     var dbMenu1 = document.getElementById('database1');

@@ -2,6 +2,12 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:getData.php">
+   </FileRef>
+   <FileRef
+      location = "group:instructorConfigurations.php">
+   </FileRef>
+   <FileRef
       location = "group:getCustomInfo.php">
    </FileRef>
    <FileRef
