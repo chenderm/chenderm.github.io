@@ -108,20 +108,8 @@
                        
                        <label for="customDQ">Enter a Custom Driving Question:</label><br>
                        <input style="width: 75%" placeholder="Enter Driving Question here" id="textinput2"
-                           name="textinput2" value="" onkeyup="addDrivingQuestion2()"></input>
-                       <!-- make different from onchange ^^                    -->
+                           name="textinput2" value="" autocomplete="off" onkeyup="addDrivingQuestion2()"></input>
                        
-<!--                       <br><br>-->
-<!--                       -->
-<!--                       <label for="suggestedDB">Suggested Databases:</label><br>-->
-<!--                       <select style="width:75%" id="suggestedDBs" onchange="">-->
-<!--                           <option value="" disabled selected>Choose a Database</option>-->
-<!--                       </select>-->
-<!--                       -->
-<!--                       <br><br>-->
-<!--                       -->
-<!--                       <button  id="default" type="button" class=""  onclick="useSuggestedDatabase()"-->
-<!--                           style="width:75%">Use Suggested Database</button>-->
                        
                        <br><br>
                        
@@ -581,43 +569,43 @@
         
         
         tippy('#cust1', {
-           content: "Edit the json code in the scripting version of DV4L",
+           content: "Modify the json code in the scripting version of DV4L",
            placement: "bottom",
         });
         tippy('#cust2', {
-           content: "Edit the json code in the scripting version of DV4L",
+           content: "Modify the json code in the scripting version of DV4L",
            placement: "bottom",
         });
         tippy('#cust3', {
-           content: "Edit the json code in the scripting version of DV4L",
+           content: "Modify the json code in the scripting version of DV4L",
            placement: "bottom",
         });
         tippy('#cust4', {
-           content: "Edit the json code in the scripting version of DV4L",
+           content: "Modify the json code in the scripting version of DV4L",
            placement: "bottom",
         });
         tippy('#cust5', {
-           content: "Edit the json code in the scripting version of DV4L",
+           content: "Modify the json code in the scripting version of DV4L",
            placement: "bottom",
         });
         tippy('#cust6', {
-           content: "Edit the json code in the scripting version of DV4L",
+           content: "Modify the json code in the scripting version of DV4L",
            placement: "bottom",
         });
         tippy('#cust7', {
-           content: "Edit the json code in the scripting version of DV4L",
+           content: "Modify the json code in the scripting version of DV4L",
            placement: "bottom",
         });
         tippy('#cust8', {
-           content: "Edit the json code in the scripting version of DV4L",
+           content: "Modify the json code in the scripting version of DV4L",
            placement: "bottom",
         });
         tippy('#cust9', {
-           content: "Edit the json code in the scripting version of DV4L",
+           content: "Modify the json code in the scripting version of DV4L",
            placement: "bottom",
         });
         tippy('#cust10', {
-           content: "Edit the json code in the scripting version of DV4L",
+           content: "Modify the json code in the scripting version of DV4L",
            placement: "bottom",
         });
         
@@ -631,31 +619,3 @@
 </html>
 
 
-<!--
-<script language = "php">
-
-print "there";
-$dsn = 'mysql:dbname=DV4L_schema; host=127.0.0.1';//local host
-$user = 'root';
-$password = 'Abbeyhills1';//change
-
-$dbh = new PDO($dsn, $user, $password);
-$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-$dbh->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
-
-$sql = $dbh->prepare("SELECT * FROM export");
-$result = $dbh->query($sql);
-
-if ($result -> num_rows >0){
-    while($row = $result->fetch_assoc()) {
-        echo "sessionid: " . $row["sessionid"]"<br>";
-      }//while
-}//if
-
-else {
-    echo "no results";
-}
-$dbh -> close();
-
-</script>
--->

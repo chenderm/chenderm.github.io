@@ -884,6 +884,8 @@ function submitGraphData(n) {
 //Switches graph types to default and enables the menu
 //Resets & enables color button
 function switchToDefault() {
+    
+    
   //set database 1 to default
   switchToDefaultDatabases(1);
   setOptions(
@@ -921,6 +923,9 @@ function switchToDefault() {
 //Show all available databases in the drop down menu
 //Select the default database
 function switchToDefaultDatabases(n) {
+    
+    
+    
   var el = document.getElementById('database' + n);
   el.innerHTML = '';
   var empty_option = document.createElement('option');
@@ -1492,13 +1497,13 @@ function sendData(n, savedNum) {
     type: 'POST',
     data: { submitdata: submitdatastr },
     success: function (response) {
-      //alert('info sent to database');
+//      alert('info sent to database');
       //alert(response.message);
       
     },
     error: function (XMLHttpRequest, textStatus, errorThrown) {
-      alert('Status: ' + textStatus);
-      alert('Error: ' + errorThrown); //error msg
+//      alert('Status: 1' + textStatus + savedNum);
+//      alert('Error: ' + errorThrown); //error msg
     },
   });
 
@@ -1534,7 +1539,7 @@ function getData() {
       console.log(response);
     },
     error: function (XMLHttpRequest, textStatus, errorThrown) {
-      alert('Status: ' + textStatus);
+      alert('Status: 2' + textStatus);
       alert('Error: ' + errorThrown); //error?
     },
   });
@@ -1574,8 +1579,8 @@ function configureCustomDV4L(id){
       
       },
       error: function (XMLHttpRequest, textStatus, errorThrown) {
-        alert('Status: ' + textStatus);
-        alert('Error: ' + errorThrown); //error?
+        alert('Status: 3' + textStatus);
+        alert('Error:' + errorThrown); //error?
       },
     });
     
@@ -1600,45 +1605,45 @@ function useCustomDatabases(databases){
 
     var dbMenu1 = document.getElementById('database1');
     var dbMenu2 = document.getElementById('database2');
-    
-    
+
+
     dbMenu1.innerHTML = "";
     dbMenu2.innerHTML = "";
-    
+
     //have both database menus state that they are using a custom list
     var option = document.createElement('option');
-    
+
     option.appendChild(document.createTextNode("Instructor Selected Databases"));
     option.value = "Custom Selected Databases";
     option.selected = true;
     option.disabled = true;
     dbMenu1.appendChild(option);
-    
+
     option = document.createElement('option');
-    
+
     option.appendChild(document.createTextNode("Instructor Selected Databases"));
     option.value = "Custom Selected Databases";
     option.selected = true;
     option.disabled = true;
     dbMenu2.appendChild(option);
-   
-    
+
+
     //populate the drop down menus
     for(var i = 0; i < databases.length; i++){
-        
-        
+
+
         //1
         var option = document.createElement('option');
         option.appendChild(document.createTextNode(databases[i]));
         option.value = databases[i];
         dbMenu1.appendChild(option);
-        
+
         //2
         option = document.createElement("option");
         option.appendChild(document.createTextNode(databases[i]));
         option.value = databases[i];
         dbMenu2.appendChild(option);
-    
+
     }
     
 }
@@ -1679,7 +1684,7 @@ function useCustomDQs(dqs){
 
 //called when the tab is closed, used to find out how long a user spent on dv4l
 window.addEventListener('beforeunload', function(event) {
-    
+//    alert("hi");
     sendData(200, -1);
     
       });

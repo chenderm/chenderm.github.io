@@ -27,6 +27,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.1/js/ion.rangeSlider.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-colorschemes"></script>
     <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
+    
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <script src="https://unpkg.com/tippy.js@6"></script>
+    <script src="https://unpkg.com/@popperjs/core@2/dist/umd/popper.min.js"></script>
+    <script src="https://unpkg.com/tippy.js@6/dist/tippy-bundle.umd.js"></script>
 
 
     <!-- CSS -->
@@ -37,7 +42,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="style/common.css">
     <link rel="stylesheet" type="text/css" href="style/basic.css">
-
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script>
         //send id to javascript function
         var id = '<?php echo $id; ?>';
@@ -48,7 +53,6 @@
 
 </head>
 
-
 <!-- HTML -->
 
 <body>
@@ -56,6 +60,10 @@
     
         <div class="col1">
             <img class="logo" src="img/HistoryInDatalogolight.png">
+                
+
+                
+                
 
             <div style="width: 100%">
                 <h2 style="display: inline-block;">Data</h2>
@@ -64,6 +72,28 @@
                     style="float: right; margin-left: 10px; margin-top: 30px;">DEFAULT</button>
                 
                  <button id="modal-btn" onclick="displayModal()" style="float: right; margin-left: 10px; margin-top: 30px;">ENTER DRIVING QUESTION</button>
+                 
+                 <button id="help" data-tooltip="" onclick="" style="float: right; margin-left: 10px; margin-top: 30px;">HELP</button>
+                 
+                 
+
+                 
+                 <script>
+                     
+                     tippy('#help', {
+                         placement: 'bottom',
+                         content: '<img src="help.gif" > ',
+                         allowHTML: true,
+                         maxWidth: '800px',
+                         animation: 'scale',
+
+                     });
+                     
+                     tippy('#default', {
+                            content: 'Return to default databases',
+                     });
+                     
+                 </script>
               
               
               <div class="modal" id="modalbox">
@@ -76,8 +106,9 @@
                        
                        <div id="text">
                        <label style="font-size: 30px"  for="dqs"> Select or Enter a Driving Question:</label><br>
-                       
-                       <label for="dqs">Select a Driving Question:</label><br>
+                      
+                       <label for="dqs">Select a Driving Question:</label>
+                       <span class="material-icons" id="tooltip1">help_outline</span> <br>
                        <select style="width: 75%" id="textinput" onchange="addDrivingQuestion()">
                            <option disabled selected>Select Driving Question</option>
                            <option>How do rates of population growth among countries in the same region/continent compare?
@@ -96,10 +127,8 @@
                        
                        <label for="customDQ">Enter a Custom Driving Question:</label><br>
                        <input style="width: 75%" placeholder="Enter Driving Question here" id="textinput2"
-                           name="textinput2" value="" onkeyup="addDrivingQuestion2()"></input>
-                   
+                           name="textinput2" value="" autocomplete="off" onkeyup="addDrivingQuestion2()"></input>
                        
-
                        
                        <br><br>
                        
@@ -127,7 +156,7 @@
                        
                        <br><br>
                        
-                       <label id="selectedDatabases"> Selected Databases: </label><br>
+                       <label id="selectedDatabases"> Selected Databases: </label><span class="material-icons" id="tooltip2">help_outline</span> <br>
                        
                        
                        <center>
@@ -164,6 +193,8 @@
                     
                 <div>
                     <h3 style="margin-top: 10px;font-size:30px;font-weight: bold;">Driving Question:</h3>
+                    
+                   
                     <p id="textEntered">Not Selected</p>
                 </div>
             </div>
@@ -307,8 +338,14 @@
                 >
                 <canvas id="canvas1"></canvas>
                 <button class="saveButton" id="save1" draggable="true" ondragstart="drag(event, 'graph1')">SAVE GRAPH 1
-                    (drag & drop)</button>
+                    
+
+                    <!--                <div class="hoverTip"> DRAG TO THE RIGHT TO SAVE GRAPH </div>-->
+                
+                </button>
                 <button class="export" id="export1" onclick="exportGraph(1);">EXPORT</button>
+                
+                <button class="saveButton" style="margin-left: 5px; cursor:pointer;" id="source1" onclick="displaySource(1)">SOURCE</button>
 
             </div>
 
@@ -317,15 +354,17 @@
                >
                 <canvas id="canvas2"></canvas>
                 <button class="saveButton" id="save2" draggable="true" ondragstart="drag(event, 'graph2')">SAVE GRAPH 2
-                    (drag & drop)</button>
+                    </button>
                 <button class="export" id="export2" onclick="exportGraph(2);">EXPORT</button>
+                
+                <button class="saveButton" style="margin-left: 5px; cursor:pointer;" id="source2" onclick="displaySource(2)">SOURCE</button>
 
             </div>
         </div>
 
         <div class="col3">
             <div id="themeToggle" style="margin-top: 5px;">
-                <h2>Saved Graphs</h2>
+                <h2>Saved Graphs</h2> <span class="material-icons" id="tooltip3">help_outline</span> <br>
                 <p align="right">
                     <c style="font-size: 20px;text-align:right">Add Notes</c>
                     <input type="checkbox" unchecked data-toggle="toggle" data-onstyle="primary" data-on=" "
@@ -336,7 +375,6 @@
             <br>
             <div class="pillar">
 
-                
                 <div class="frame" id="frame1">
                     <div class="tile" ondrop="drop(event, 'saved1')" ondragover="allowDrop(event)"
                         onclick="showToolTip(1)">
@@ -350,9 +388,9 @@
                         </a>
                     </div>
                     <br>
-                        <button class="customize" id="cust1" onclick="customize(1)"> Customize </button>
+                        <button class="customize" id="cust1" onmouseover="showToolTip(1)" onmouseleave="showToolTip(1)" onclick="customize(1)"> Customize </button>
                 </div>
-
+                
 
                 <div class="frame">
                     <div class="tile" ondrop="drop(event, 'saved2')" ondragover="allowDrop(event)"
@@ -367,7 +405,7 @@
                         </a>
                     </div>
                     <br>
-                        <button class="customize" id="cust2" onclick="customize(2)"> Customize </button>
+                        <button class="customize" id="cust2" onmouseover="showToolTip(2)" onmouseleave="showToolTip(2)" onclick="customize(2)"> Customize </button>
                 </div>
 
                 <div class="frame">
@@ -383,7 +421,7 @@
                         </a>
                     </div>
                     <br>
-                        <button class="customize" id="cust3" onclick="customize(3)"> Customize </button>
+                        <button class="customize" id="cust3" onmouseover="showToolTip(3)" onmouseleave="showToolTip(3)" onclick="customize(3)"> Customize </button>
                 </div>
 
                 <div class="frame" id="hide1">
@@ -399,7 +437,7 @@
                         </a>
                     </div>
                     <br>
-                        <button class="customize" id="cust4" onclick="customize(4)"> Customize </button>
+                        <button class="customize" id="cust4" onmouseover="showToolTip(4)" onmouseleave="showToolTip(4)" onclick="customize(4)"> Customize </button>
                 </div>
 
                 <div class="frame" id="hide2">
@@ -415,10 +453,10 @@
                         </a>
                     </div>
                     <br>
-                        <button class="customize" id="cust5" onclick="customize(5)"> Customize </button>
+                        <button class="customize" id="cust5" onmouseover="showToolTip(5)" onmouseleave="showToolTip(5)" onclick="customize(5)"> Customize </button>
                 </div>
-                </div>
-                <div class="pillar">
+            </div>
+            <div class="pillar">
                 <div class="frame">
                     <div class="tile" ondrop="drop(event, 'saved6')" ondragover="allowDrop(event)"
                         onclick="showToolTip(6)">
@@ -432,7 +470,7 @@
                         </a>
                     </div>
                     <br>
-                        <button class="customize" id="cust6" onclick="customize(6)"> Customize </button>
+                        <button class="customize" id="cust6" onmouseover="showToolTip(6)" onmouseleave="showToolTip(6)" onclick="customize(6)"> Customize </button>
                 </div>
 
                 <div class="frame">
@@ -448,7 +486,7 @@
                         </a>
                     </div>
                     <br>
-                        <button class="customize" id="cust7" onclick="customize(7)"> Customize </button>
+                        <button class="customize" id="cust7" onmouseover="showToolTip(7)" onmouseleave="showToolTip(7)" onclick="customize(7)"> Customize </button>
                 </div>
 
                 <div class="frame">
@@ -460,11 +498,11 @@
                             <div class="hoverTip">delete</div>
                         </a>
                         <a id="swap8" class="swap" draggable="true" ondragstart="drag(event, 'saved8')">&#x21c4;
-                            <div class="hoverTip">transfer (drag & drop)</div>
+     M                       <div class="hoverTip">transfer (drag & drop)</div>
                         </a>
                     </div>
                     <br>
-                        <button class="customize" id="cust8" onclick="customize(8)"> Customize </button>
+                        <button class="customize" id="cust8" onmouseover="showToolTip(8)" onmouseleave="showToolTip(8)" onclick="customize(8)"> Customize </button>
                 </div>
 
                 <div class="frame" id="hide3">
@@ -480,7 +518,7 @@
                         </a>
                     </div>
                     <br>
-                        <button class="customize" id="cust9" onclick="customize(9)"> Customize </button>
+                        <button class="customize" id="cust9" onmouseover="showToolTip(9)" onmouseleave="showToolTip(9)" onclick="customize(9)"> Customize </button>
                 </div>
 
                 <div class="frame" id="hide4">
@@ -496,7 +534,7 @@
                         </a>
                     </div>
                     <br>
-                        <button class="customize" id="cust10" onclick="customize(10)"> Customize </button>
+                        <button class="customize" id="cust10" onmouseover="showToolTip(10)" onmouseleave="showToolTip(10)" onclick="customize(10)"> Customize </button>
                 </div>
             </div>
 
@@ -510,7 +548,90 @@
 
         </div>
     
-    
+    <script>
+        //hover tool tip code
+        
+        tippy('#tooltip1', {
+               content: 'Based on your driving question, there will be suggested databases. Select the databases that can be used to answer your driving question.',
+               placement: "bottom",
+        });
+        
+        tippy('#tooltip2', {
+           content: "The databases that you select will populate the Y-Axis drop down menus.",
+           placement: "bottom",
+        });
+        
+        tippy('#tooltip3', {
+           content: "Click on the saved graphs to view the json code",
+           placement: "bottom",
+        });
+        
+        tippy('#save1', {
+           content: "Drag to an empty save slot to the right",
+           placement: "bottom",
+        });
+        
+        tippy('#save2', {
+           content: "Drag to an empty save slot to the right",
+           placement: "bottom",
+        });
+        
+        tippy('#source1', {
+           content: "View the source for the database",
+           placement: "bottom",
+        });
+        
+        tippy('#source2', {
+           content: "View the source for the database",
+           placement: "bottom",
+        });
+        
+        
+        tippy('#cust1', {
+           content: "Modify the json code in the scripting version of DV4L",
+           placement: "bottom",
+        });
+        tippy('#cust2', {
+           content: "Modify the json code in the scripting version of DV4L",
+           placement: "bottom",
+        });
+        tippy('#cust3', {
+           content: "Modify the json code in the scripting version of DV4L",
+           placement: "bottom",
+        });
+        tippy('#cust4', {
+           content: "Modify the json code in the scripting version of DV4L",
+           placement: "bottom",
+        });
+        tippy('#cust5', {
+           content: "Modify the json code in the scripting version of DV4L",
+           placement: "bottom",
+        });
+        tippy('#cust6', {
+           content: "Modify the json code in the scripting version of DV4L",
+           placement: "bottom",
+        });
+        tippy('#cust7', {
+           content: "Modify the json code in the scripting version of DV4L",
+           placement: "bottom",
+        });
+        tippy('#cust8', {
+           content: "Modify the json code in the scripting version of DV4L",
+           placement: "bottom",
+        });
+        tippy('#cust9', {
+           content: "Modify the json code in the scripting version of DV4L",
+           placement: "bottom",
+        });
+        tippy('#cust10', {
+           content: "Modify the json code in the scripting version of DV4L",
+           placement: "bottom",
+        });
+        
+        
+        
+        
+    </script>
 
 </body>
 
@@ -545,3 +666,5 @@ $dbh -> close();
 
 </script>
 -->
+
+

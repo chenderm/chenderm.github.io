@@ -925,7 +925,11 @@ function suggestDatabases(query){
     //populate with all non zero score databases
     for(var i = 0; i <sorted.length ; i++){
         if(sorted[i][1] > 1){
-        suggestions.push(sorted[i][0]);
+            
+            if(ID == null || database_dict["Instructor Selected Databases"].includes(sorted[i][0])){
+                suggestions.push(sorted[i][0]);
+            }
+            
         }
     }
     
@@ -1279,6 +1283,8 @@ function useSelected(){
 //allow students to edit their graph json with a custom dv4l scripting link
 function customize(n){
     
+
+    
     //insert graph data into an sql database using our session id as the key
     var key = rstring;
     var jsonCode = document.getElementById("tip" + n);
@@ -1306,7 +1312,7 @@ function customize(n){
         
       },
       error: function (XMLHttpRequest, textStatus, errorThrown) {
-        alert('Status: ' + textStatus);
+        alert('Status: 4' + textStatus);
         alert('Error: ' + errorThrown); //error msg
       },
     });
@@ -1596,7 +1602,7 @@ var keyword_dict = {
                                                  
                                  'CO2','CO2',
                                  'emissions','emissions',
-                     'carbon',
+                     'carbon','carbon',
                      'emission',
                      'dioxide',
                       
