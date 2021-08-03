@@ -1140,14 +1140,14 @@ function updateSelected(){
             var add = 1;
             for(var j = 0; j < selected.length; j++){
                 
-                if(selected[j] == checkTitle[i].outerText){
+                if(selected[j] == checkTitle[i].innerText){
                     add = 0;
                 }
                 
             }
             
             if(add){
-                selected.push(checkTitle[i].outerText);
+                selected.push(checkTitle[i].innerText);
             }
             
         } else {
@@ -1156,7 +1156,7 @@ function updateSelected(){
             
             for(var j = 0; j < selected.length; j++){
                 
-                if(selected[j] == checkTitle[i].outerText){
+                if(selected[j] == checkTitle[i].innerText){
                     
                     selected.splice(j, 1);
                 }
