@@ -515,7 +515,11 @@ function changeColorTheme(element) {
     if (element.checked) {  //dark theme chosen
         //change color for graph text
         Chart.defaults.global.defaultFontColor = "white";
-
+        
+        //change notes background color
+        var notes = document.getElementById("notes");
+        notes.style.backgroundColor = "black";
+        
         //redraw graphs 1 and 2
         regraph(1);
         regraph(2);
@@ -588,6 +592,10 @@ function changeColorTheme(element) {
     else {  //light theme chosen
         //change color for graph text
         Chart.defaults.global.defaultFontColor = "#524636";
+        
+        //change notes background color
+        var notes = document.getElementById("notes");
+        notes.style.backgroundColor = "white";
 
         //redraw graphs 1 and 2
         regraph(1);
@@ -767,6 +775,7 @@ function exportGraph(n) {
     sessionStorage.setItem("maxDate", tempGraph.maxDate);
     sessionStorage.setItem("graph_type", tempGraph.type);
     sessionStorage.setItem("color", tempGraph.color);
+    sessionStorage.setItem("citation", "test");
 
     window.open("/export.html", "_blank");
 }

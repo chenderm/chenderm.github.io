@@ -12,9 +12,12 @@ $(document).ready( function() {
     var xaxis = sessionStorage.getItem("x");
     var gtype = sessionStorage.getItem("graph_type");
     var color = sessionStorage.getItem("color");
+    var citation = sessionStorage.getItem("citation");
 
     var ctx = document.getElementById("graphRegion");
     ctx = ctx.getContext("2d");
+    
+    console.log(sessionStorage);
     var graph = new Chart(ctx, {
         type: gtype,
         data: {

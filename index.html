@@ -207,9 +207,11 @@
                 <p></p>
 
                 Year Range (x-axis):
-                <div style="margin-left: 7px; width: 75%; display: inline-block;">
+                
+                <div style="margin-left: 7px; margin-top: 7px; width: 75%; display: inline-block;">
                     <input type="text" class="js-range-slider" id="range1" value="" />
                 </div>
+                
                 <p></p>
 
                 <div style="display: inline-block; position: relative;">
@@ -264,7 +266,7 @@
                 <p></p>
 
                 Year Range (x-axis):
-                <div style="margin-left: 7px; width: 75%; display: inline-block;">
+                <div style="margin-left: 7px; margin-top: 7px; width: 75%; display: inline-block;">
                     <input type="text" class="js-range-slider" id="range2" value="" />
                 </div>
                 <p></p>
@@ -357,20 +359,20 @@
             <div class="pillar">
 
                 <div class="frame" id="frame1">
-                    <div class="tile" ondrop="drop(event, 'saved1')" ondragover="allowDrop(event)"
-                        onclick="showToolTip(1)">
-                        <div class="tooltiptext" id="tip1"></div>
-                        <canvas id="saved1"></canvas>
-                        <a id="exit1" class="exit" onclick="deleteGraph(1)">x
-                            <div class="hoverTip">delete</div>
-                        </a>
-                        <a id="swap1" class="swap" draggable="true" ondragstart="drag(event, 'saved1')">&#x21c4;
-                            <div class="hoverTip">transfer (drag & drop)</div>
-                        </a>
-                    </div>
-                    <br>
-                        <button class="customize" id="cust1" onmouseover="showToolTip(1)" onmouseleave="showToolTip(1)" onclick="customize(1)"> Customize </button>
-                </div>
+               <div class="tile" ondrop="drop(event, 'saved1')" ondragover="allowDrop(event)"
+                   onclick="showToolTip(1)">
+                   <div class="tooltiptext" id="tip1"></div>
+                   <canvas id="saved1"></canvas>
+                   <a id="exit1" class="exit" onclick="deleteGraph(1)">x
+                       <div class="hoverTip">delete</div>
+                   </a>
+                   <a id="swap1" class="swap" draggable="true" ondragstart="drag(event, 'saved1')">&#x21c4;
+                       <div class="hoverTip">transfer (drag & drop)</div>
+                   </a>
+               </div>
+               <br>
+                   <button class="customize" id="cust1" onmouseover="showToolTip(1)" onmouseleave="showToolTip(1)" onclick="customize(1)"> Customize </button>
+           </div>
                 
 
                 <div class="frame">
@@ -522,9 +524,14 @@
             <!-- Notes code by DG -->
             <div id="myNotes" style="display:none;">
                 <h2>Notes</h2>
-                <textarea id="notes" rows="10" cols="40" value=""></textarea>
-                <br><br>
+                
                 <button class="export" onclick="exportNotes()">EXPORT NOTE</button>
+                <br><br>
+                <textarea id="notes" rows="8" cols="40" value=""></textarea>
+                
+                
+                
+                
             </div>
 
         </div>
