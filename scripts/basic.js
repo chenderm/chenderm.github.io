@@ -768,7 +768,7 @@ function exportGraph(n) {
     sessionStorage.setItem("graph_type", tempGraph.type);
     sessionStorage.setItem("color", tempGraph.color);
     //TODO: 
-    sessionStorage.setItem("citation", "test");
+    sessionStorage.setItem("citation", source_dict[tempGraph.DB]);
 
     window.open("/export.html", "_blank");
 }

@@ -59,4 +59,5 @@ $(document).ready(function () {
             }
         }
     });
+    document.getElementById("citation").innerHTML = citations;
 });
