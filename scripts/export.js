@@ -1,5 +1,5 @@
 //When the page first loads.
-$(document).ready( function() {
+$(document).ready(function () {
     console.log("Ready!");
     Chart.defaults.global.defaultFontColor = "black";
 
@@ -12,6 +12,9 @@ $(document).ready( function() {
     var xaxis = sessionStorage.getItem("x");
     var gtype = sessionStorage.getItem("graph_type");
     var color = sessionStorage.getItem("color");
+    var citations = sessionStorage.getItem("citation");
+    console.log(sessionStorage);
+
 
     var ctx = document.getElementById("graphRegion");
     ctx = ctx.getContext("2d");
@@ -26,7 +29,7 @@ $(document).ready( function() {
         },
         options: {
             plugins: {
-                colorschemes: {scheme: color,}
+                colorschemes: { scheme: color, }
             },
             scales: {
                 yAxes: [{
@@ -48,6 +51,11 @@ $(document).ready( function() {
                 display: true,
                 text: db + " -- " + yaxis,
                 fontSize: 20
+            },
+            citations: {
+                display: true,
+                text: "citations",
+                fontSize: 10
             }
         }
     });

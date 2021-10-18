@@ -6,9 +6,9 @@ var dragging = [false, false];
 //When the page first loads.
 $(document).ready(function () {
     for (var i = 0; i < 10; i++) {
-        
+
         savedGraphs.push(undefined);
-        
+
     }
     savedGraphColor = "#524636";
 });
@@ -59,7 +59,7 @@ function saveGraph(saveNum, graphNum, swap) {
             document.getElementById("exit" + saveNum).style.visibility = "hidden";
             document.getElementById("swap" + saveNum).style.visibility = "hidden";
             document.getElementById("cust" + saveNum).style.visibility = "hidden";
-            
+
             return;
         }
     }
@@ -411,7 +411,7 @@ function deleteGraph(savedNum) {
 //Shows tooltip over saved graph
 //Runs when the user clicks a saved graph
 function showToolTip(savedNum) {
-//    alert("in show tool tip");
+    //    alert("in show tool tip");
     var tip = document.getElementById("tip" + savedNum);
     if (isDeleted[savedNum - 1]) {
         deleteGraph(savedNum);
@@ -475,7 +475,7 @@ function drop(ev, destination) {
             if (savedGraphs[saveNum - 1] == undefined || savedGraphs[saveNum - 1] == null) { //second saved region is empty
                 saveGraph(saveNum, graphNum, false);
 
-//                sendData(destination, 0);
+                //                sendData(destination, 0);
 
                 //sendData(destination, 0);
 
@@ -767,6 +767,8 @@ function exportGraph(n) {
     sessionStorage.setItem("maxDate", tempGraph.maxDate);
     sessionStorage.setItem("graph_type", tempGraph.type);
     sessionStorage.setItem("color", tempGraph.color);
+    //TODO: 
+    sessionStorage.setItem("citation", "test");
 
     window.open("/export.html", "_blank");
 }
@@ -803,185 +805,183 @@ function addNotes(element) {
 function addDrivingQuestion() {
     var input = document.getElementById('textinput')
     var div = document.getElementById('textEntered');
-    
+
     console.log(input.value);
-    if(input.value == "Select Driving Question"){
-        
+    if (input.value == "Select Driving Question") {
+
         console.log("hello");
         div.innerHTML = "Not Selected";
         suggestDatabases("Not Selected");
-        
+
     } else {
-        
+
         div.innerHTML = input.value;
         suggestDatabases(input.value);
-        
+
     }
-    
-    
-    
+
+
+
 }
 
 function addDrivingQuestion2() {
-    
+
     var input = document.getElementById('textinput2')
     var div = document.getElementById('textEntered');
     div.innerHTML = input.value;
-    
-    
-    if(div.innerHTML == ""){
+
+
+    if (div.innerHTML == "") {
         div.innerHTML = "Not Selected";
     }
-    
+
     suggestDatabases(input.value);
-    
-    
-    
+
+
+
 }
 
 //finds the most relevant databases to return, and populates the checkboxlist
-function suggestDatabases(query){
+function suggestDatabases(query) {
 
     //cleaned Query will become a list of words in the query
     var cleanedQuery = parseAndClean(query);
-    
+
     //database_dict is defined in common.js, it contains the default databases
-    
+
     //keyword_dict is defined at the end of this file, it contains the keyword mappings for the databases
-    
+
     //holds the scores of different databases
     var databaseScores = {
-        
-        
-          'Populations':0,
-          'Population Female Percentage':0,
-          'Population Female Percentage at Birth':0,
-          'Life Expectancy - Continents':0,
-          'Median Age':0,
-          'Births':0,
-          'Births Per Woman':0,
-          'Births Per 1000 People':0,
-          'Child Deaths':0,
-          'Child Mortality Rates':0,
-          'Survival Rate to Age 65 - Male':0,
-          'Survival Rate to Age 65 - Female':0,
-        
-       
-          'Military Personnel':0,
-          'Military Personnel Percent of Population':0,
-          'Military Spending':0,
-          'Military Spending Percent of GDP':0,
-          'Military Spending in thousands of US dollars':0,
-       
-        'GDP':0,
-            'GDP Per Capita':0,
-            'Economic Freedom Scores':0,
-                    
-          
-        
-          'CO2 Emissions':0,
-          'CO2 Emissions Per Capita':0,
-          'CO2 Emissions Percentages':0,
-          'CO2 Emissions Cumulative':0,
-          'CO2 Emissions Cumulative Percentages':0,
-            'Battle Related Deaths in State Based Conflicts': 0,
+
+
+        'Populations': 0,
+        'Population Female Percentage': 0,
+        'Population Female Percentage at Birth': 0,
+        'Life Expectancy - Continents': 0,
+        'Median Age': 0,
+        'Births': 0,
+        'Births Per Woman': 0,
+        'Births Per 1000 People': 0,
+        'Child Deaths': 0,
+        'Child Mortality Rates': 0,
+        'Survival Rate to Age 65 - Male': 0,
+        'Survival Rate to Age 65 - Female': 0,
+
+
+        'Military Personnel': 0,
+        'Military Personnel Percent of Population': 0,
+        'Military Spending': 0,
+        'Military Spending Percent of GDP': 0,
+        'Military Spending in thousands of US dollars': 0,
+
+        'GDP': 0,
+        'GDP Per Capita': 0,
+        'Economic Freedom Scores': 0,
+
+
+
+        'CO2 Emissions': 0,
+        'CO2 Emissions Per Capita': 0,
+        'CO2 Emissions Percentages': 0,
+        'CO2 Emissions Cumulative': 0,
+        'CO2 Emissions Cumulative Percentages': 0,
+        'Battle Related Deaths in State Based Conflicts': 0,
         'Nuclear Warhead Inventory in Nuclear Powers': 0,
         'Registered Mobile Money Accounts': 0,
-        
-        
+
+
     };
-    
 
-    
-    
+
+
+
     //go through the cleaned query and assign each database a score based on keywords
-    for(var word in cleanedQuery){
+    for (var word in cleanedQuery) {
 
-        for(var key in keyword_dict){
+        for (var key in keyword_dict) {
 
-            for(var i = 0; i < keyword_dict[key].length; i++){
+            for (var i = 0; i < keyword_dict[key].length; i++) {
 
-                if(cleanedQuery[word] == keyword_dict[key][i]){
+                if (cleanedQuery[word] == keyword_dict[key][i]) {
 
                     databaseScores[key]++;
-                    
+
                 }
-                
+
             }
 
         }
 
     }
-    
-    
-  
+
+
+
     var sorted = sortScores(databaseScores);
-    
-    
-    
+
+
+
     //list of suggested databases
     var suggestions = [];
-    
+
     //populate with all non zero score databases
-    for(var i = 0; i <sorted.length ; i++){
-        if(sorted[i][1] > 1){
-            
-            if(ID == null || database_dict["Instructor Selected Databases"].includes(sorted[i][0])){
+    for (var i = 0; i < sorted.length; i++) {
+        if (sorted[i][1] > 1) {
+
+            if (ID == null || database_dict["Instructor Selected Databases"].includes(sorted[i][0])) {
                 suggestions.push(sorted[i][0]);
             }
-            
+
         }
     }
-    
-//    console.log(suggestions);
-    
+
+    //    console.log(suggestions);
+
     populateCheckboxList(suggestions);
 
-    
+
 }
 
 
 
-function sortScores(obj)
-{
-  // convert object into array
-    var sortable=[];
-    for(var key in obj)
-        if(obj.hasOwnProperty(key))
+function sortScores(obj) {
+    // convert object into array
+    var sortable = [];
+    for (var key in obj)
+        if (obj.hasOwnProperty(key))
             sortable.push([key, obj[key]]);
-    
+
     // sort items by value
-    sortable.sort(function(a, b)
-    {
-      return b[1]-a[1];
+    sortable.sort(function (a, b) {
+        return b[1] - a[1];
     });
-    
-    
-//    console.log(sortable);
-    
+
+
+    //    console.log(sortable);
+
     return sortable; // array in format [ [ key1, val1 ], [ key2, val2 ], ... ]
 }
 
 //seperates query into list of words, removes punctuation, uppercase, and stop words
-function parseAndClean(query){
-    
+function parseAndClean(query) {
+
     query = query.toLowerCase();
 
     //splits string into list of words
     var cleanedQuery = query.trim().split(" ");
-    
+
     //removes punctuation from words
-    
-    for(var i = 0; i < cleanedQuery.length; i++){
+
+    for (var i = 0; i < cleanedQuery.length; i++) {
         var orig = cleanedQuery[i];
-        var temp = orig.replace(/[.,\/#!?$%\^&\*;:{}=\-_~()]/g,"");
-        cleanedQuery[i] = temp.replace(/\s{2,}/g," ");
+        var temp = orig.replace(/[.,\/#!?$%\^&\*;:{}=\-_~()]/g, "");
+        cleanedQuery[i] = temp.replace(/\s{2,}/g, " ");
     }
-                                  
-      
+
+
     return cleanedQuery;
-    
-    
+
+
 }
 
 
@@ -1013,8 +1013,8 @@ function parseAndClean(query){
 //global var to keep track of the selected databases
 var selected = [];
 
-function populateCheckboxList(suggestedDatabases){
-    
+function populateCheckboxList(suggestedDatabases) {
+
     var div = document.getElementById('textEntered');
     var checkboxList = document.getElementById('checkboxlist');
     var label = document.getElementById('checkboxLabel');
@@ -1026,7 +1026,7 @@ function populateCheckboxList(suggestedDatabases){
     checkboxList.innerHTML = "";
 
     //populate checklist with all databases, if there is a driving question suggest DBs
-    if(div.innerHTML == "Not Selected" || suggestedDatabases == null){
+    if (div.innerHTML == "Not Selected" || suggestedDatabases == null) {
 
 
         label.innerHTML = "All Databases:";
@@ -1034,35 +1034,35 @@ function populateCheckboxList(suggestedDatabases){
 
 
         for (var key in database_dict) {
-          var value = database_dict[key];
+            var value = database_dict[key];
 
-          for (var index = 0; index < value.length; index++) {
-            var option = document.createElement('option');
-            var title = document.createElement("label");
-            var description = document.createTextNode(value[index]);
-            var checkbox = document.createElement("input");
+            for (var index = 0; index < value.length; index++) {
+                var option = document.createElement('option');
+                var title = document.createElement("label");
+                var description = document.createTextNode(value[index]);
+                var checkbox = document.createElement("input");
 
-              checkbox.type = "checkbox";
-              checkbox.name = index;
-              checkbox.addEventListener("click", updateSelected);
-              title.className = "checkTitle";
-              checkbox.className = "check";
+                checkbox.type = "checkbox";
+                checkbox.name = index;
+                checkbox.addEventListener("click", updateSelected);
+                title.className = "checkTitle";
+                checkbox.className = "check";
 
-              
-              
-              for(var i = 0; i < selected.length; i++){
-                  
-                  if(selected[i] == value[index]){
-                      checkbox.checked = true;
-                  }
-                  
-              }
 
-              title.appendChild(checkbox);
-              title.appendChild(description);
-              checkboxList.appendChild(title);
 
-          }
+                for (var i = 0; i < selected.length; i++) {
+
+                    if (selected[i] == value[index]) {
+                        checkbox.checked = true;
+                    }
+
+                }
+
+                title.appendChild(checkbox);
+                title.appendChild(description);
+                checkboxList.appendChild(title);
+
+            }
 
 
         }
@@ -1073,37 +1073,37 @@ function populateCheckboxList(suggestedDatabases){
         label.innerHTML = "Suggested Databases:";
 
 
-        for(var i = 0; i < suggestedDatabases.length; i++){
+        for (var i = 0; i < suggestedDatabases.length; i++) {
 
             var option = document.createElement('option');
             var title = document.createElement("label");
             var description = document.createTextNode(suggestedDatabases[i]);
             var checkbox = document.createElement("input");
 
-              checkbox.type = "checkbox";
-              checkbox.name = index;
+            checkbox.type = "checkbox";
+            checkbox.name = index;
             checkbox.addEventListener("click", updateSelected);
             title.className = "checkTitle";
             checkbox.className = "check";
 
-            
-            
-            
-          
-            for(var j = 0; j < selected.length; j++){
-                if(selected[j] == suggestedDatabases[i]){
+
+
+
+
+            for (var j = 0; j < selected.length; j++) {
+                if (selected[j] == suggestedDatabases[i]) {
                     checkbox.checked = true;
                 }
             }
 
 
-              title.appendChild(checkbox);
-              title.appendChild(description);
-              checkboxList.appendChild(title);
+            title.appendChild(checkbox);
+            title.appendChild(description);
+            checkboxList.appendChild(title);
 
         }
 
-        if(checkboxList.innerHTML == ""){
+        if (checkboxList.innerHTML == "") {
 
             checkboxList.innerHTML = "No Suggested Databases";
 
@@ -1112,215 +1112,215 @@ function populateCheckboxList(suggestedDatabases){
         }
 
 
-        
+
 
     }
-    
+
 }
 
 
 
 
 //updates the list of selected databases to be used from the driving question popup
-function updateSelected(){
+function updateSelected() {
 
-    
-    
+
+
     var checks = document.getElementsByClassName("check");
     var checkTitle = document.getElementsByClassName("checkTitle");
-    
 
-    
+
+
     //go through the checkboxes and make a list of the selected ones
-    for(var i = 0; i < checks.length; i++){
-        
-        
+    for (var i = 0; i < checks.length; i++) {
+
+
         //if checked ensure that it is in the selected list
-        if(checks[i].checked === true){
+        if (checks[i].checked === true) {
             var add = 1;
-            for(var j = 0; j < selected.length; j++){
-                
-                if(selected[j] == checkTitle[i].innerText){
+            for (var j = 0; j < selected.length; j++) {
+
+                if (selected[j] == checkTitle[i].innerText) {
                     add = 0;
                 }
-                
+
             }
-            
-            if(add){
+
+            if (add) {
                 selected.push(checkTitle[i].innerText);
             }
-            
+
         } else {
-        
+
             //if unchecked ensure that it is not in the selected list
-            
-            for(var j = 0; j < selected.length; j++){
-                
-                if(selected[j] == checkTitle[i].innerText){
-                    
+
+            for (var j = 0; j < selected.length; j++) {
+
+                if (selected[j] == checkTitle[i].innerText) {
+
                     selected.splice(j, 1);
                 }
-                
+
             }
-            
+
         }
-        
-        
+
+
     }
-    
+
     //update the content of the "selected databases" div
     populateSelected(selected);
-   
-    
+
+
 }
 
-function populateSelected(databaseList){
+function populateSelected(databaseList) {
     var selectedList = document.getElementById("selectedList");
-    selectedList.innerHTML='';
+    selectedList.innerHTML = '';
 
-    for(var i = 0; i < databaseList.length; i++){
-        
-        
+    for (var i = 0; i < databaseList.length; i++) {
+
+
         var title = document.createElement("label");
         var description = document.createTextNode(databaseList[i]);
-        
+
         var name = databaseList[i];
-        
-//        title.addEventListener("click", function(){
-//           deleteSelected(name);
-//        }, false);
-        
+
+        //        title.addEventListener("click", function(){
+        //           deleteSelected(name);
+        //        }, false);
+
         title.addEventListener("click", deleteSelected, false);
-          
-          title.appendChild(description);
-          selectedList.appendChild(title);
 
-        
+        title.appendChild(description);
+        selectedList.appendChild(title);
 
-}
-    
-    if(selectedList.innerHTML ==  ''){
-        selectedList.innerHTML= 'No Selected Databases';
+
+
     }
-    
+
+    if (selectedList.innerHTML == '') {
+        selectedList.innerHTML = 'No Selected Databases';
+    }
+
 }
 
-function deleteSelected(){
-    
+function deleteSelected() {
+
     console.log(this.innerHTML);
-    
+
     var dbName = this.innerHTML;
-    
+
     var index = selected.indexOf(dbName);
 
-    if(index > -1){
+    if (index > -1) {
         selected.splice(index, 1);
     }
 
     populateSelected(selected);
-    
+
     var div = document.getElementById('textEntered');
     console.log(div.innerHTML);
     console.log(selected);
-    
+
     suggestDatabases(div.innerHTML);
 
 }
 
 
 //populate database dropdown menus with the selected databases
-function useSelected(){
-    
+function useSelected() {
+
     var dbMenu1 = document.getElementById('database1');
     var dbMenu2 = document.getElementById('database2');
-    
-    
+
+
     dbMenu1.innerHTML = "";
     dbMenu2.innerHTML = "";
-    
+
     //have both database menus state that they are using a custom list
     var option = document.createElement('option');
-    
+
     option.appendChild(document.createTextNode("Custom Selected Databases"));
     option.value = "Custom Selected Databases";
     option.selected = true;
     option.disabled = true;
     dbMenu1.appendChild(option);
-    
+
     option = document.createElement('option');
-    
+
     option.appendChild(document.createTextNode("Custom Selected Databases"));
     option.value = "Custom Selected Databases";
     option.selected = true;
     option.disabled = true;
     dbMenu2.appendChild(option);
-   
-    
+
+
     //populate the drop down menus
-    for(var i = 0; i < selected.length; i++){
-        
+    for (var i = 0; i < selected.length; i++) {
+
         var option = document.createElement('option');
-        
+
         option.appendChild(document.createTextNode(selected[i]));
         option.value = selected[i];
         dbMenu1.appendChild(option);
-        
+
         option = document.createElement("option");
         option.appendChild(document.createTextNode(selected[i]));
         option.value = selected[i];
-        
-        
-       
+
+
+
         dbMenu2.appendChild(option);
-   
+
     }
-    
+
     //close the popup
     closeModal();
 }
 
 
 //allow students to edit their graph json with a custom dv4l scripting link
-function customize(n){
-    
+function customize(n) {
 
-    
+
+
     //insert graph data into an sql database using our session id as the key
     var key = rstring;
     var jsonCode = document.getElementById("tip" + n);
-    
+
     console.log(jsonCode.textContent);
-    
+
     var submitdata = {
-        
-        'sessionid' : key,
-        'json' : jsonCode.textContent,
-        
+
+        'sessionid': key,
+        'json': jsonCode.textContent,
+
     };
-    
+
     var submitdatastr = JSON.stringify(submitdata);
-    
+
     $.ajax({
-      url: '../customScripting.php',
-      type: 'POST',
-      data: { submitdata: submitdatastr },
-      success: function (data) {
-        //alert('info sent to database');
-//        alert(response.message);
-          
-          console.log(data);
-        
-      },
-      error: function (XMLHttpRequest, textStatus, errorThrown) {
-        alert('Status: 4' + textStatus);
-        alert('Error: ' + errorThrown); //error msg
-      },
+        url: '../customScripting.php',
+        type: 'POST',
+        data: { submitdata: submitdatastr },
+        success: function (data) {
+            //alert('info sent to database');
+            //        alert(response.message);
+
+            console.log(data);
+
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+            alert('Status: 4' + textStatus);
+            alert('Error: ' + errorThrown); //error msg
+        },
     });
-    
-    
-    
-    
-    
+
+
+
+
+
 }
 
 
@@ -1330,361 +1330,361 @@ function customize(n){
 //note: all keywords should be entered in lowercase
 var keyword_dict = {
     'Populations': [
-                    'population','population','population',
-                    'populations','populations','populations','populations',
-                    'populated','populated',
-                    'populus' ,
-                    'industrial',
-                    ],
+        'population', 'population', 'population',
+        'populations', 'populations', 'populations', 'populations',
+        'populated', 'populated',
+        'populus',
+        'industrial',
+    ],
     'Population Female Percentage': [
-                    'population', 'population','population',
-                    'populations','populations',
-                    'populated','populated',
-                    'female','female',
-                    'females',
-                    'women',
-                    'girl',
-                    'girls',
-                    'percentage'
-                    ],
+        'population', 'population', 'population',
+        'populations', 'populations',
+        'populated', 'populated',
+        'female', 'female',
+        'females',
+        'women',
+        'girl',
+        'girls',
+        'percentage'
+    ],
     'Population Female Percentage at Birth': [
-                      'population', 'population',
-                      'populations',
-                      'populated',
-                      'female','female',
-                      'females',
-                      'women',
-                      'girl',
-                      'girls',
-                  'percentage',
-                    'birth','birth',
-                    'child',
-                    'infant',
-                    'pastoral',
-                    ],
+        'population', 'population',
+        'populations',
+        'populated',
+        'female', 'female',
+        'females',
+        'women',
+        'girl',
+        'girls',
+        'percentage',
+        'birth', 'birth',
+        'child',
+        'infant',
+        'pastoral',
+    ],
 
     'Life Expectancy - Continents': [
-                     'life','life','life',
-                     'expectancy','expectancy','expectancy',
-                     'continents','continents','continents',
-                     'mortality',
-                     'death',
-                     'dying',
-                     'living','living',
-                     
-                      'pastoral',
-                                     
-                     ],
+        'life', 'life', 'life',
+        'expectancy', 'expectancy', 'expectancy',
+        'continents', 'continents', 'continents',
+        'mortality',
+        'death',
+        'dying',
+        'living', 'living',
+
+        'pastoral',
+
+    ],
     'Median Age': [
-                     'population',
-                     'median',
-                     'age',
-                   'median',
-                   'age',
-                   
-                     ],
+        'population',
+        'median',
+        'age',
+        'median',
+        'age',
+
+    ],
     'Births': [
-                     'birth','birth',
-                    'births', 'births',
-                     'expectancy',
-                     'population',
-                     'death',
-                     'dying',
-                
-                                     
-                     ],
-    
+        'birth', 'birth',
+        'births', 'births',
+        'expectancy',
+        'population',
+        'death',
+        'dying',
+
+
+    ],
+
     'Births Per Woman': [
-                     'birth',
-                     'births','births',
-                     'expectancy',
-                     'continents',
-                     'population',
-                     'death',
-                     'dying',
-                    'woman','woman',
-                    'women',
-                                                       
-                     ],
-    
+        'birth',
+        'births', 'births',
+        'expectancy',
+        'continents',
+        'population',
+        'death',
+        'dying',
+        'woman', 'woman',
+        'women',
+
+    ],
+
     'Births Per 1000 People': [
-                     'birth',
-                   'births','births',
-                     'expectancy',
-                     'continents',
-                     'population',
-                     '1000',
-                     'people',
-                               '1000',
-                               'people',
-                                     
-                     ],
-    
+        'birth',
+        'births', 'births',
+        'expectancy',
+        'continents',
+        'population',
+        '1000',
+        'people',
+        '1000',
+        'people',
+
+    ],
+
     'Child Deaths': [
-                     
-                     'child',
-                     'deaths',
-                     'child',
-                     'deaths',
-                     'population',
-                     
-                     ],
-    
+
+        'child',
+        'deaths',
+        'child',
+        'deaths',
+        'population',
+
+    ],
+
     'Child Mortality Rates': [
-                              
-                     'child', 'child',
-                     'mortality', 'mortality',
-                     'rates', 'rates',
-                     'birth',
-                                     
-                     ],
+
+        'child', 'child',
+        'mortality', 'mortality',
+        'rates', 'rates',
+        'birth',
+
+    ],
     'Survival Rate to Age 65 - Male': [
-                                       
-                                       
-                     'survival',
-                     'rate',
-                     'age',
-                     '65',
-                     'male',
-                   'survival',
-                   'rate',
-                   'age',
-                   '65',
-                   'male',
-                     'sixty',
-                   'five',
-                   'sixty-five',
-                                       
-                     ],
-    
-    
+
+
+        'survival',
+        'rate',
+        'age',
+        '65',
+        'male',
+        'survival',
+        'rate',
+        'age',
+        '65',
+        'male',
+        'sixty',
+        'five',
+        'sixty-five',
+
+    ],
+
+
     'Survival Rate to Age 65 - Female': [
-                                         
-                     'survival',
-                     'rate',
-                     'age',
-                     '65',
-                     'female',
-                                         'survival',
-                                         'rate',
-                                         'age',
-                                         '65',
-                                         'female',
-                     'sixty',
-                   'five',
-                   'sixty-five',
-                    
-                     ],
-    
+
+        'survival',
+        'rate',
+        'age',
+        '65',
+        'female',
+        'survival',
+        'rate',
+        'age',
+        '65',
+        'female',
+        'sixty',
+        'five',
+        'sixty-five',
+
+    ],
+
     'Military Personnel': [
-                     'military',
-                     'personnel',
-                   'military',
-                   'personnel',
-                     'soldiers',
-                           
-                     ],
-    
+        'military',
+        'personnel',
+        'military',
+        'personnel',
+        'soldiers',
+
+    ],
+
     'Military Personnel Percent of Population': [
-                                                 
-                     'military',
-                     'personnel',
-                     'percent',
-                     'population',
-                                                 'military',
-                                                 'personnel',
-                                                 'percent',
-                                                 'population'
-                    
-                   
-                     ],
-    
+
+        'military',
+        'personnel',
+        'percent',
+        'population',
+        'military',
+        'personnel',
+        'percent',
+        'population'
+
+
+    ],
+
     'Military Spending': [
-                                                 
-                     'military',
-                     'spending',
-                          'military',
-                          'spending',
-                     'army',
-                     'cost',
-                     'expense',
-                     'budget',
-                    'economy'
-                    
-                   
-                     ],
-    
+
+        'military',
+        'spending',
+        'military',
+        'spending',
+        'army',
+        'cost',
+        'expense',
+        'budget',
+        'economy'
+
+
+    ],
+
     'Military Spending Percent of GDP': [
-                                                 
-                     'military',
-                     'spending',
-                     'army',
-                     'cost',
-                     'expense',
-                     'budget',
-                    'gdp',
-                 'percent',
-                     
-                    
-                   
-                     ],
-    
+
+        'military',
+        'spending',
+        'army',
+        'cost',
+        'expense',
+        'budget',
+        'gdp',
+        'percent',
+
+
+
+    ],
+
     'Military Spending in thousands of US dollars': [
-                                                 
-                     'military',
-                     'spending',
-                     'army',
-                     'cost',
-                     'expense',
-                     'budget',
-                     'thousands',
-                     'US',
-                     'dollars',
-                    
-                   
-                     ],
-    
+
+        'military',
+        'spending',
+        'army',
+        'cost',
+        'expense',
+        'budget',
+        'thousands',
+        'US',
+        'dollars',
+
+
+    ],
+
     'GDP': [
-                                                 
-                     'gdp','gdp','gdp','gdp',
-                     'gross',
-                     'domestic',
-                     'product',
-                     'spending',
-                     'budget','budget',
-                     'dollars',
-                    'money',
-                    'economy','economy',
-                    
-                   
-                     ],
-    
+
+        'gdp', 'gdp', 'gdp', 'gdp',
+        'gross',
+        'domestic',
+        'product',
+        'spending',
+        'budget', 'budget',
+        'dollars',
+        'money',
+        'economy', 'economy',
+
+
+    ],
+
     'GDP Per Capita': [
-                                                 
-                       'gdp','gdp','gdp','gdp',
-                       'gross',
-                       'domestic',
-                       'product',
-                       'spending',
-                       'budget','budget',
-                       'dollars',
-                      'money',
-                      'economy','economy',
-                    'capita'
-                    
-                   
-                     ],
-    
+
+        'gdp', 'gdp', 'gdp', 'gdp',
+        'gross',
+        'domestic',
+        'product',
+        'spending',
+        'budget', 'budget',
+        'dollars',
+        'money',
+        'economy', 'economy',
+        'capita'
+
+
+    ],
+
     'Economic Freedom Scores': [
-                                                 
-                     'economic',
-                     'freedom',
-                     'scores',
-                     'economy','economy',
-                     'spend',
-                     'spending',
-                    
-                   
-                     ],
-    
+
+        'economic',
+        'freedom',
+        'scores',
+        'economy', 'economy',
+        'spend',
+        'spending',
+
+
+    ],
+
     'CO2 Emissions': [
-                                                 
-                     'CO2','CO2',
-                     'emissions','emissions',
-                     'carbon',
-                     'emission',
-                     'dioxide',
-                    
-                   
-                     ],
-    
+
+        'CO2', 'CO2',
+        'emissions', 'emissions',
+        'carbon',
+        'emission',
+        'dioxide',
+
+
+    ],
+
     'CO2 Emissions Per Capita': [
-                                                 
-                                 'CO2','CO2',
-                                 'emissions','emissions',
-                     'carbon','carbon',
-                     'emission',
-                     'dioxide',
-                      
-                      'capita',
-                    
-                   
-                     ],
-    
+
+        'CO2', 'CO2',
+        'emissions', 'emissions',
+        'carbon', 'carbon',
+        'emission',
+        'dioxide',
+
+        'capita',
+
+
+    ],
+
     'CO2 Emissions Percentages': [
-                                                 
-                                  'CO2','CO2',
-                                  'emissions','emissions',
-                     'carbon',
-                     'emission',
-                     'dioxide',
-                    'percentages',
-                   
-                     ],
-    
+
+        'CO2', 'CO2',
+        'emissions', 'emissions',
+        'carbon',
+        'emission',
+        'dioxide',
+        'percentages',
+
+    ],
+
     'CO2 Emissions Cumulative': [
-                                                 
-                     'CO2','CO2',
-                     'emissions','emissions',
-                     'carbon',
-                     'emission',
-                     'dioxide',
-                    'cumulative',
-                   
-                     ],
-    
+
+        'CO2', 'CO2',
+        'emissions', 'emissions',
+        'carbon',
+        'emission',
+        'dioxide',
+        'cumulative',
+
+    ],
+
     'CO2 Emissions Cumulative Percentages': [
-                                                 
-                     'CO2','CO2',
-                 'emissions','emissions',
-                     'carbon',
-                     'emission',
-                     'dioxide',
-                    'cumulative',
-                     'percentages',
-                   
-                     ],
-    
-    
+
+        'CO2', 'CO2',
+        'emissions', 'emissions',
+        'carbon',
+        'emission',
+        'dioxide',
+        'cumulative',
+        'percentages',
+
+    ],
+
+
     'Battle Related Deaths in State Based Conflicts': [
-                                                     
-                    'conflicts','conflicts',
-                    'conflict','conflict',
-                    'battle', 'battle',
-                    'related',
-                    'death',
-                    'deaths',
-                    'state',
-                                
-                                                       
-                                                    ],
-    
+
+        'conflicts', 'conflicts',
+        'conflict', 'conflict',
+        'battle', 'battle',
+        'related',
+        'death',
+        'deaths',
+        'state',
+
+
+    ],
+
     'Nuclear Warhead Inventory in Nuclear Powers': [
-    
-                    'nuclear', 'nuclear',
-                    'warhead', 'warhead',
-                    'nuke', 'nukes',
-                    'power', 'powers',
-                    'superpower',
-                                                    
-                                                    
-                                                    
-                                                    ],
-    
-    'Registered Mobile Money Accounts' :[
-                                         
-                 'registered',
-                'mobile',
-                'money', 'money',
-                'account','account',
-                 'accounts','accounts',
-                                         
-                                         ],
-    
-    
-                                                    
-                                                       
-                                                    
-                                                   
-    
+
+        'nuclear', 'nuclear',
+        'warhead', 'warhead',
+        'nuke', 'nukes',
+        'power', 'powers',
+        'superpower',
+
+
+
+    ],
+
+    'Registered Mobile Money Accounts': [
+
+        'registered',
+        'mobile',
+        'money', 'money',
+        'account', 'account',
+        'accounts', 'accounts',
+
+    ],
+
+
+
+
+
+
+
 };
