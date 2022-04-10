@@ -4,8 +4,10 @@ $(document).ready( function() {
     Chart.defaults.global.defaultFontColor = "black";
 
     var labelsArr = sessionStorage.getItem("labelsArr");
+    console.log(labelsArr)
     labelsArr = labelsArr.split(",");
     var dataArr = sessionStorage.getItem("dataArr");
+    console.log(dataArr)
     dataArr = dataArr.split(",");
     var db = sessionStorage.getItem("db");
     var yaxis = sessionStorage.getItem("y");

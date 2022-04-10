@@ -349,6 +349,7 @@
             <div id="themeToggle" style="margin-top: 5px;">
                 <h2>Saved Graphs</h2> <span class="material-icons" id="tooltip3">help_outline</span> <br>
                 <p align="right">
+                    <button class="export" onclick="exportAll()">EXPORT ALL SAVED GRAPHS </button>
                     <c style="font-size: 20px;text-align:right">Add Notes</c>
                     <input type="checkbox" unchecked data-toggle="toggle" data-onstyle="primary" data-on=" "
                         data-offstyle="info" data-off=" " data-size="sm" onchange="addNotes(this)">
@@ -363,6 +364,7 @@
                    onclick="showToolTip(1)">
                    <div class="tooltiptext" id="tip1"></div>
                    <canvas id="saved1"></canvas>
+                   <div class="hiddenInfo" id="hiddenInfo1" style="visibility: hidden;"></div>
                    <a id="exit1" class="exit" onclick="deleteGraph(1)">x
                        <div class="hoverTip">delete</div>
                    </a>
@@ -380,6 +382,7 @@
                         onclick="showToolTip(2)">
                         <span class="tooltiptext" id="tip2"></span>
                         <canvas id="saved2"></canvas>
+                        <div class="hiddenInfo" id="hiddenInfo2" style="visibility: hidden;"></div>
                         <a id="exit2" class="exit" onclick="deleteGraph(2)">x
                             <div class="hoverTip">delete</div>
                         </a>
@@ -396,6 +399,7 @@
                         onclick="showToolTip(3)">
                         <span class="tooltiptext" id="tip3"></span>
                         <canvas id="saved3"></canvas>
+                        <div class="hiddenInfo" id="hiddenInfo3" style="visibility: hidden;"></div>
                         <a id="exit3" class="exit" onclick="deleteGraph(3)">x
                             <div class="hoverTip">delete</div>
                         </a>
@@ -412,6 +416,7 @@
                         onclick="showToolTip(4)">
                         <span class="tooltiptext" id="tip4"></span>
                         <canvas id="saved4"></canvas>
+                        <div class="hiddenInfo" id="hiddenInfo4" style="visibility: hidden;"></div>
                         <a id="exit4" class="exit" onclick="deleteGraph(4)">x
                             <div class="hoverTip">delete</div>
                         </a>
@@ -428,6 +433,7 @@
                         onclick="showToolTip(5)">
                         <span class="tooltiptext" id="tip5"></span>
                         <canvas id="saved5"></canvas>
+                        <div class="hiddenInfo" id="hiddenInfo5" style="visibility: hidden;"></div>
                         <a id="exit5" class="exit" onclick="deleteGraph(5)">x
                             <div class="hoverTip">delete</div>
                         </a>
@@ -445,6 +451,7 @@
                         onclick="showToolTip(6)">
                         <span class="tooltiptext" id="tip6"></span>
                         <canvas id="saved6"></canvas>
+                        <div class="hiddenInfo" id="hiddenInfo6" style="visibility: hidden;"></div>
                         <a id="exit6" class="exit" onclick="deleteGraph(6)">x
                             <div class="hoverTip">delete</div>
                         </a>
@@ -461,6 +468,7 @@
                         ondragover="allowDrop(event)">
                         <span class="tooltiptext" id="tip7"></span>
                         <canvas id="saved7"></canvas>
+                        <div class="hiddenInfo" id="hiddenInfo7" style="visibility: hidden;"></div>
                         <a id="exit7" class="exit" onclick="deleteGraph(7)">x
                             <div class="hoverTip">delete</div>
                         </a>
@@ -477,6 +485,7 @@
                         ondragover="allowDrop(event)">
                         <span class="tooltiptext" id="tip8"></span>
                         <canvas id="saved8"></canvas>
+                        <div class="hiddenInfo" id="hiddenInfo8" style="visibility: hidden;"></div>
                         <a id="exit8" class="exit" onclick="deleteGraph(8)">x
                             <div class="hoverTip">delete</div>
                         </a>
@@ -493,6 +502,7 @@
                         ondragover="allowDrop(event)">
                         <span class="tooltiptext" id="tip9"></span>
                         <canvas id="saved9"></canvas>
+                        <div class="hiddenInfo" id="hiddenInfo9" style="visibility: hidden;"></div>
                         <a id="exit9" class="exit" onclick="deleteGraph(9)">x
                             <div class="hoverTip">delete</div>
                         </a>
@@ -509,6 +519,7 @@
                         ondragover="allowDrop(event)">
                         <span class="tooltiptext" id="tip10"></span>
                         <canvas id="saved10"></canvas>
+                        <div class="hiddenInfo" id="hiddenInfo10" style="visibility: hidden;"></div>
                         <a id="exit10" class="exit" onclick="deleteGraph(10)">x
                             <div class="hoverTip">delete</div>
                         </a>
@@ -528,9 +539,6 @@
                 <button class="export" onclick="exportNotes()">EXPORT NOTE</button>
                 <br><br>
                 <textarea id="notes" rows="8" cols="40" value=""></textarea>
-                
-                
-                
                 
             </div>
 

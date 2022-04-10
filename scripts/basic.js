@@ -36,6 +36,8 @@ function saveGraph(saveNum, graphNum, swap) {
         tempGraph = graph1;
     else
         tempGraph = graph2;
+    
+    //console.log(tempGraph);
     var labelsArr = tempGraph.config.data.labels;
     var dataArr = tempGraph.config.data.datasets[0].data;
     var hoverText = tempGraph.description;
@@ -48,6 +50,17 @@ function saveGraph(saveNum, graphNum, swap) {
     var maxDate = tempGraph.maxDate;
     var graph_type = tempGraph.type;
     var color = tempGraph.color;
+
+    
+    var hiddenInfo = {
+        data: dataArr,
+        labels: labelsArr
+    }
+    console.log(JSON.stringify(hiddenInfo));
+
+    document.getElementById("hiddenInfo" + saveNum).innerHTML = JSON.stringify(hiddenInfo);
+    document.getElementById("hiddenInfo" + saveNum).style.visibility = "hidden";
+
 
     //check if current graph is already saved somewhere
     for (var i = 0; i < savedGraphs.length; i++) {
@@ -755,6 +768,7 @@ function resave(saveNum) {
 //This runs when the export button is clicked
 function exportGraph(n) {
     var tempGraph = undefined;
+
     if (n == 1) {
         tempGraph = graph1;
         sendData(1, "export");
@@ -765,7 +779,9 @@ function exportGraph(n) {
     }
 
     sessionStorage.setItem("labelsArr", tempGraph.config.data.labels);
+    console.log(tempGraph.config.data.labels)
     sessionStorage.setItem("dataArr", tempGraph.config.data.datasets[0].data);
+    console.log(tempGraph.config.data.datasets[0].data)
     sessionStorage.setItem("db", tempGraph.DB);
     sessionStorage.setItem("x", tempGraph.X);
     sessionStorage.setItem("y", tempGraph.Y);
@@ -778,6 +794,50 @@ function exportGraph(n) {
     sessionStorage.setItem("citation", "test");
 
     window.open("/export.html", "_blank");
+}
+
+
+//exports all the saved graphs 
+//loops through all saved and updates session storage
+function exportAll(){
+
+    for (let i = 1; i < 11; i++){ 
+        let tipid = "tip" + String(i);
+        let tooltip  = document.getElementById(tipid); 
+
+        //if there is a graph saved at this slot
+        if(tooltip.innerHTML != "") {
+
+            console.log("tooltip " + i + " exists");
+            let temp = tooltip.innerHTML.replace(/\&nbsp;/g, '')
+            graphInfo = JSON.parse(temp.replace(/\<br>/g, ''))
+
+            console.log(graphInfo)
+            console.log(graphInfo.DB)
+
+            //get labels and data arr from html div
+            hiddenInfo = document.getElementById("hiddenInfo" + String(i)).innerHTML;
+
+            hiddenInfo = JSON.parse(String(hiddenInfo))
+           
+
+            console.log(hiddenInfo["labels"])
+
+            console.log(hiddenInfo["data"])
+
+            // update session storage
+            sessionStorage.setItem("labelsArr" + i , hiddenInfo["labels"]);
+            sessionStorage.setItem("dataArr" + i, hiddenInfo["data"]);
+            sessionStorage.setItem("db" + i, graphInfo.DB);//y axis
+            sessionStorage.setItem("lowDate" + i, graphInfo.lowDate);//x
+            sessionStorage.setItem("highDate" + i, graphInfo.highDate);
+            sessionStorage.setItem("graph_type" + i, graphInfo.gtype);
+            sessionStorage.setItem("location" + i, graphInfo.Yaxis);
+        }
+
+    }
+
+    window.open("/exportAll.html", "_blank");
 }
 
 function exportNotes() {
