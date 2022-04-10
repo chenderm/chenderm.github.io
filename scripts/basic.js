@@ -781,7 +781,7 @@ function exportGraph(n) {
     sessionStorage.setItem("labelsArr", tempGraph.config.data.labels);
     console.log(tempGraph.config.data.labels)
     sessionStorage.setItem("dataArr", tempGraph.config.data.datasets[0].data);
-    console.log(tempGraph.config.data.datasets[0].data)
+    console.log(tempGraph.config.data.datasets[0].data);
     sessionStorage.setItem("db", tempGraph.DB);
     sessionStorage.setItem("x", tempGraph.X);
     sessionStorage.setItem("y", tempGraph.Y);
@@ -793,7 +793,7 @@ function exportGraph(n) {
     sessionStorage.setItem("color", tempGraph.color);
     sessionStorage.setItem("citation", "test");
 
-    window.open("/export.html", "_blank");
+    window.open("/dv4l/export.html", "_blank");
 }
 
 
