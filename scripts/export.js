@@ -1,5 +1,5 @@
 //When the page first loads.
-$(document).ready( function() {
+$(document).ready(function () {
     console.log("Ready!");
     Chart.defaults.global.defaultFontColor = "black";
 
@@ -31,7 +31,7 @@ $(document).ready( function() {
         },
         options: {
             plugins: {
-                colorschemes: {scheme: color,}
+                colorschemes: { scheme: color, }
             },
             scales: {
                 yAxes: [{
@@ -53,6 +53,11 @@ $(document).ready( function() {
                 display: true,
                 text: db + " -- " + yaxis,
                 fontSize: 20
+            },
+            citations: {
+                display: true,
+                text: "citations",
+                fontSize: 10
             }
         }
     });
