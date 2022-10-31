@@ -1415,6 +1415,28 @@ function useSelected() {
     closeModal();
 }
 
+function useAllDBs() {
+
+    var checks = document.getElementsByClassName("check");
+    var checkTitle = document.getElementsByClassName("checkTitle");
+
+    selected = [] 
+
+    //select all databases
+    for (var i = 0; i < checks.length; i++) {
+        
+        selected.push(checkTitle[i].innerText);
+
+    }
+
+    //populate drop down menus and close modal 
+    useSelected();
+
+
+
+
+}
+
 
 //allow students to edit their graph json with a custom dv4l scripting link
 function customize(n) {
