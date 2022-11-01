@@ -1429,6 +1429,7 @@ function useAllDBs() {
 
     }
 
+    populateSelected(selected)
     //populate drop down menus and close modal 
     useSelected();
 
