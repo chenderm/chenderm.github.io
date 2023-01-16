@@ -1365,7 +1365,7 @@ function deleteSelected() {
 
 
 //populate database dropdown menus with the selected databases
-function useSelected() {
+function useSelected(custom) {
 
     var dbMenu1 = document.getElementById('database1');
     var dbMenu2 = document.getElementById('database2');
@@ -1374,19 +1374,25 @@ function useSelected() {
     dbMenu1.innerHTML = "";
     dbMenu2.innerHTML = "";
 
+    var menuDisplay = "Custom Selected Databases"
+
+    if(custom){
+        menuDisplay = "All Databases"
+    }
+
     //have both database menus state that they are using a custom list
     var option = document.createElement('option');
 
-    option.appendChild(document.createTextNode("Custom Selected Databases"));
-    option.value = "Custom Selected Databases";
+    option.appendChild(document.createTextNode(menuDisplay));
+    option.value = menuDisplay;
     option.selected = true;
     option.disabled = true;
     dbMenu1.appendChild(option);
 
     option = document.createElement('option');
 
-    option.appendChild(document.createTextNode("Custom Selected Databases"));
-    option.value = "Custom Selected Databases";
+    option.appendChild(document.createTextNode(menuDisplay));
+    option.value = menuDisplay;
     option.selected = true;
     option.disabled = true;
     dbMenu2.appendChild(option);
@@ -1431,9 +1437,7 @@ function useAllDBs() {
 
     populateSelected(selected)
     //populate drop down menus and close modal 
-    useSelected();
-
-
+    useSelected(true);
 
 
 }
