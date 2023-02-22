@@ -1157,12 +1157,13 @@ function populateCheckboxList(suggestedDatabases) {
 
        
 
-
+        //display suggested databases
         for (var i = 0; i < suggestedDatabases.length; i++) {
 
             var option = document.createElement('option');
             var title = document.createElement("label");
-            var description = document.createTextNode(suggestedDatabases[i]);
+            var db = suggestedDatabases[i]// + "test"
+            var description = document.createTextNode(db);
             var checkbox = document.createElement("input");
 
             checkbox.type = "checkbox";
@@ -1260,7 +1261,7 @@ function populateCheckboxList(suggestedDatabases) {
 //updates the list of selected databases to be used from the driving question popup
 function updateSelected() {
 
-
+    console.log("in update selected")
 
     var checks = document.getElementsByClassName("check");
     var checkTitle = document.getElementsByClassName("checkTitle");
@@ -1284,6 +1285,16 @@ function updateSelected() {
 
             if (add) {
                 selected.push(checkTitle[i].innerText);
+
+                //ensure that the other instance of this db is checked (incase it is selected from the suggested list)
+                for(var t = 0; t < checks.length; t++) {
+
+                    if(checkTitle[t].innerText == checkTitle[i].innerText){
+                        checks[t].checked = true
+                    }
+
+                }
+
             }
 
         } else {
@@ -1436,6 +1447,7 @@ function useAllDBs() {
     }
 
     populateSelected(selected)
+
     //populate drop down menus and close modal 
     useSelected(true);
 
