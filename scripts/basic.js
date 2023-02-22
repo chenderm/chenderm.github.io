@@ -908,6 +908,27 @@ function addDrivingQuestion2() {
 
 }
 
+function clearDrivingQuestion() {
+
+    //drop down clear
+
+    var input = document.getElementById('textinput')
+    var div = document.getElementById('textEntered');
+
+    input.value = "Select Driving Question"
+
+    //text field clear
+
+    input = document.getElementById('textinput2')
+    input.value = ""
+
+    //update home dq component
+
+    div.innerHTML = "Not Selected"
+
+
+}
+
 //finds the most relevant databases to return, and populates the checkboxlist
 function suggestDatabases(query) {
 

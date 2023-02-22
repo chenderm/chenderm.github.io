@@ -50,13 +50,12 @@
                 <h2 style="display: inline-block;">Data</h2>
 <!--                 <button id="clear" onclick="clearAllValues()" style="float: right; margin-left: 10px; margin-top: 30px;">CLEAR</button>-->
                 <button id="default" onclick="switchToDefault()"
-                    style="float: right; margin-left: 10px; margin-top: 30px;">DEFAULT</button>
-                
-                 <button id="modal-btn" onclick="displayModal()" style="float: right; margin-left: 10px; margin-top: 30px;">ENTER DRIVING QUESTION</button>
+                    style="float: right; margin-left: 10px; margin-top: 30px;">DEFAULT DATABASES</button>
+                 
                  
                  <button id="help" data-tooltip="" onclick="" style="float: right; margin-left: 10px; margin-top: 30px;">HELP</button>
                  
-                 
+                 <button id="modal-btn" onclick="displayModal()" style="float: right; margin-left: 10px; margin-top: 30px;">ENTER DRIVING QUESTION</button>
 
                  
                  <script>
@@ -183,12 +182,19 @@
                 <div class="input">
                     
                 <div>
+
+                    <button id="help" data-tooltip="" onclick="clearDrivingQuestion()" style="float: right; margin-left: 10px; margin-top: 30px;">CLEAR DRIVING QUESTION </button>
                     <h3 style="margin-top: 10px;font-size:30px;font-weight: bold;">Driving Question:</h3>
                     
                    
                     <p id="textEntered">Not Selected</p>
+
+                    
                 </div>
+                
             </div>
+
+            
            
            </div>
           
