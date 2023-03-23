@@ -105,9 +105,11 @@
                        
                        <br>OR<br>
                        
-                       <label for="customDQ">Enter a Custom Driving Question:</label><br>
-                       <input style="width: 75%" placeholder="Enter Driving Question here" id="textinput2"
-                           name="textinput2" value="" autocomplete="off" onkeyup="addDrivingQuestion2()"></input>
+                       <label for="customDQ">Enter a Custom Driving Question:</label> <br>
+                       <input style="width: 65%" placeholder="Enter Driving Question here" id="textinput2"
+                           name="textinput2" value="" autocomplete="off" onkeyup="addDrivingQuestion2()"> <button id="help" data-tooltip="" onclick="clearDrivingQuestion(); addDrivingQuestion2()" >CLEAR</button></input>
+
+                           
                        
                        
                        <br><br>
@@ -183,7 +185,7 @@
                     
                 <div>
 
-                    <button id="help" data-tooltip="" onclick="clearDrivingQuestion()" style="float: right; margin-left: 10px; margin-top: 30px;">CLEAR DRIVING QUESTION </button>
+                    
                     <h3 style="margin-top: 10px;font-size:30px;font-weight: bold;">Driving Question:</h3>
                     
                    
