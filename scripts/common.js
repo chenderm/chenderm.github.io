@@ -144,14 +144,25 @@ var database_dict = {
     'Child Mortality Rates',
     'Survival Rate to Age 65 - Male',
     'Survival Rate to Age 65 - Female',
+    'Projected Race & Hispanic Origin',
   ],
   Military: [
     'Military Personnel',
     'Military Personnel Percent of Population',
     'Military Spending',
     'Military Spending Percent of GDP',
+    'Military Spending in thousands of US dollars',
+    'Battle Related Deaths in State Based Conflicts',
+    'Nuclear Warhead Inventory in Nuclear Powers',
   ],
-  Economies: ['GDP', 'GDP Per Capita', 'Economic Freedom Scores'],
+  Economies: [
+              'GDP',
+              'GDP Per Capita',
+              'Economic Freedom Scores',
+              'Poverty Threshold',
+              'Registered Mobile Money Accounts',
+              ],
+    
   Environment: [
     'CO2 Emissions',
     'CO2 Emissions Per Capita',
@@ -159,6 +170,93 @@ var database_dict = {
     'CO2 Emissions Cumulative',
     'CO2 Emissions Cumulative Percentages',
   ],
+};
+
+//holds the source information for each database
+var source_dict = {
+    
+      'Populations' : "Gapminder, HYDE (2016) and United Nations Population Division (2019). Total Population Retrieved from http://www.gapminder.org/ and https://www.gapminder.org/data/documentation/gd003/",
+    
+    "Population Female Percentage": "World Bank – World Development Indicators. Population, Female (% of total) Retrieved from http://data.worldbank.org/data-catalog/world-development-indicators",
+    
+    "Population Female Percentage at Birth": "World Bank – World Development Indicators. Population, Female (% of total) Retrieved from http://data.worldbank.org/data-catalog/world-development-indicators",
+    
+    
+    'Life Expectancy - Continents' : "James C. Riley (2005) - Estimates of Regional and Global Life Expectancy, 1800-2001. Life Expectancy. Retrieved from https://www.lifetable.de/RileyBib.pdf" ,
+    
+    
+    'Median Age' : "UN Population Division, World Population Prospects (2017). UN Population Division (Median Age) Retrieved from https://esa.un.org/unpd/wpp/Download/Standard/Population/",
+    
+    
+    'Births': "United Nations, Department of Economic and Social Affairs, Population Division (2019). Annually Interpolated Demographic indicators - Births (Thousands) Retrieved from https://population.un.org/wpp2019/Download/Standard/Interpolated/",
+    
+    
+    'Births Per Woman': "United Nations, Department of Economic and Social Affairs, Population Division (2019). Annually Interpolated Demographic Indicators - Total Fertility (Live Births per Woman) Retrieved from https://population.un.org/wpp2019/Download/Standard/Interpolated/",
+    
+    
+    'Births Per 1000 People': "Brian Mitchell (April 2013). International Historical Statistics (Births per 1,000) Retrieved from http://www.palgrave.com/us/book/9780230005150",
+    
+    
+    'Child Deaths': "World Bank - World Development Indicators. Number of under-five deaths. Retrieved from http://data.worldbank.org/data-catalog/world-development-indicators",
+    
+    
+    'Child Mortality Rates': "World Bank - World Development Indicators. Mortality Rate, Under-5 (Per 1,000 Live Births) Retrieved from http://data.worldbank.org/data-catalog/world-development-indicators",
+    
+    
+    'Survival Rate to Age 65 - Male': "World Bank - World Development Indicators. World Population Prospects (2017). Survival to age 65, Male (% of Cohort). Retrieved from https://data.worldbank.org/data-catalog/world-development-indicatiors",
+    
+    
+    'Survival Rate to Age 65 - Female': "World Bank - World Development Indicators. World Population Prospects (2017). Survival to age 65, Female (% of Cohort). Retrieved from https://data.worldbank.org/data-catalog/world-development-indicatiors",
+    
+    
+    'Projected Race & Hispanic Origin': "https://www.census.gov/data/tables/2017/demo/popproj/2017-summary-tables.html",
+    
+    
+    'Military Personnel': "COW Project. Military Personnel (2017). Retrieved from http://www.correlatesofwar.org/data-sets/national-material-capabilities",
+    
+    
+    'Military Personnel Percent of Population': "COW Project. Military Personnel as a share of total population (COW(2017)). Retrieved from http://www.correlatesofwar.org/data-sets/national-material-capabilities",
+    
+    //no source for military spending
+//    'Military Spending': "",
+    
+    
+    'Military Spending Percent of GDP': "World Bank - World Development Indicators. Military Expenditure (% of GDP). Retrieved from http://data.worldbank.org/data-catalog/world-development-indicators",
+    
+    //no source
+//    'Military Spending in thousands of US dollars',
+    
+    'Battle Related Deaths in State Based Conflicts': "https://ourworldindata.org/war-and-peace (War and Peace After 1945)",
+    
+    'Nuclear Warhead Inventory in Nuclear Powers': " https://ourworldindata.org/nuclear-weapons (Stockpiles of nuclear weapons)",
+    
+    
+    'GDP' : "Feenstra, Robert C., Robert Inklaar and Marcel P. Timmer (2015) “The Next Generation of the Penn World Table”. Output-side Real GDP Per Capita. Retrieved from https://www.rug.nl/ggdc/productivity/pwt/",
+    
+    'GDP Per Capita': "Feenstra, Robert C., Robert Inklaar and Marcel P. Timmer (2015) “The Next Generation of the Penn World Table”. Output-side Real GDP Per Capita. Retrieved from https://www.rug.nl/ggdc/productivity/pwt/",
+    
+    'Economic Freedom Scores': "Fraser Institute. Economic Freedom of the World. Retrieved from https://www.fraserinstitute.org/economic-freedom/dataset",
+    
+    'Poverty Threshold': "https://www.census.gov/library/publications/2020/demo/p60-270.html (Poverty Thresholds: 2019)",
+    
+    'Registered Mobile Money Accounts' : " https://ourworldindata.org/technology-adoption (Mobile money accounts by region)",
+    
+    
+    'CO2 Emissions': "International Energy Agency, IEA World Energy Balances 2019 and 2006 IPCC Guidelines for Greenhouse Gas Inventories, last accessed June 2020 http://data.un.org/",
+    
+    
+    'CO2 Emissions Per Capita': "International Energy Agency, IEA World Energy Balances 2019 and 2006 IPCC Guidelines for Greenhouse Gas Inventories, last accessed June 2020 http://data.un.org/",
+    
+    //no source
+//    'CO2 Emissions Percentages',
+    
+    'CO2 Emissions Cumulative': "Our World in Data based on Global Carbon Project. Cumulative CO2 Emissions.",
+    
+    //no source
+//    'CO2 Emissions Cumulative Percentages',
+    
+    
+    
 };
 
 //graphs are defined here to have easier access
@@ -203,29 +301,43 @@ $(document).ready(function () {
     hide_min_max: true,
     prettify_enabled: false,
   });
+    
+    
+
+    
 
   switchToDefault(); //load default view when the page first loads
+
+
+  sendData(200, -1);
+
+
 });
 
 //Display Modal when user clicks 'Custom'
 //Opens a new popup from the browser to allow users
 //to upload a files from local computer
 function displayModal() {
-  let modal = document.querySelector('.modal');
-  modal.style.display = 'block';
+  var modal = document.getElementById('modalbox');
+    
+//  modal.style.display = 'block';
+    modal.classList.add("show");
+    populateCheckboxList();
 }
 
 //When the user clicks on (x), close the modal
 function closeModal() {
   let modal = document.querySelector('.modal');
-  modal.style.display = 'none';
+//  modal.style.display = 'none';
+    modal.classList.remove("show");
 }
 
 //Close modal when user clicks anywhere outside of it.
 window.onclick = function (e) {
   let modal = document.querySelector('.modal');
   if (e.target == modal) {
-    modal.style.display = 'none';
+//    modal.style.display = 'none';
+      modal.classList.remove("show");
   }
 };
 
@@ -479,12 +591,20 @@ function graphData(
 
     //add driving question (only use the first graph)
     //To do: make sure this is implemented correctly
-    if (n == 1) {
-      var dq = document.getElementById('driving_question');
-      if (typeof drivingQuestion[database] === 'undefined')
-        dq.innerHTML = 'default driving question';
-      else dq.innerHTML = drivingQuestion[database];
-    }
+    // if (n == 1) {
+    //   var dq = document.getElementById('textinput2');
+    //   if (typeof drivingQuestion[database] === undefined)
+    //     dq.innerHTML = 'default driving question';
+    //   else dq.innerHTML = drivingQuestion[database];
+
+    //   //always saying default driving question
+    //   console.log(dq.innerHTML);
+    // }
+
+    // if (n==1){
+    //   var driving_text_input = document.getElementById('textinput2').value;
+
+    // }
 
     //create graph
     var ctx = document.getElementById('canvas' + n);
@@ -724,7 +844,7 @@ function submitGraphData(n) {
       gtype,
       color
     );
-  sendData(n);
+  sendData(n, 0);
   //Export file log analysis code
   //   var sessionid = globe;
   //   var accesstime = '2008-01-01 00:00:01';
@@ -764,6 +884,8 @@ function submitGraphData(n) {
 //Switches graph types to default and enables the menu
 //Resets & enables color button
 function switchToDefault() {
+    
+    
   //set database 1 to default
   switchToDefaultDatabases(1);
   setOptions(
@@ -801,6 +923,9 @@ function switchToDefault() {
 //Show all available databases in the drop down menu
 //Select the default database
 function switchToDefaultDatabases(n) {
+    
+    
+    
   var el = document.getElementById('database' + n);
   el.innerHTML = '';
   var empty_option = document.createElement('option');
@@ -1218,7 +1343,7 @@ function regraph(n) {
       minDate,
       maxDate,
       graphType,
-      color
+      color,
     );
   else
     graphData(
@@ -1242,7 +1367,8 @@ function randomstring(length, chars) {
   return result;
 }
 
-function sendData(n) {
+function sendData(n, savedNum) {
+
   //Sessionid code
   var sessionid = rstring;
 
@@ -1261,24 +1387,87 @@ function sendData(n) {
   var datestring = year + '-' + (month + 1) + '-' + date;
   var accesstime = datestring + ' ' + time;
 
+  var ydatabase = null;
+  var locationname = null;
+  var ranges = null;
+  var rangestart = null;
+  var rangesend = null;
+  var gtypedata = null;
+  var colordata = null;
+  var drivingQuestion = null;
+  var isDropDown = null;
+  var hasNotes = null;
+  var scriptSeen = null;
+  var savedGraphNum = null;
+  var exportNum = null;
+
+  //tooltip clicked to see json code
+  if (n == 0) {
+    var data = document.getElementById('tip' + savedNum).textContent;
+    data = data.replace(/\\n/g, "\\n")
+      .replace(/\\'/g, "\\'")
+      .replace(/\\"/g, '\\"')
+      .replace(/\\&/g, "\\&")
+      .replace(/\\r/g, "\\r")
+      .replace(/\\t/g, "\\t")
+      .replace(/\\b/g, "\\b")
+      .replace(/\\f/g, "\\f")
+      .replace(/\s/gm, '')
+      .replace(/[\u0000-\u0019]+/g, "")
+      .replace(/[\u0000-\u001F]+/g, "");
+    // remove non-printable and other non-valid JSON chars
+      
+      var mydata = "";
+      if(data != ""){
+         mydata = JSON.parse(data);
+      }
+      
+    rangestart = mydata.lowDate;
+    rangesend = mydata.highDate;
+    ydatabase = mydata.DB;
+    gtypedata = mydata.gtype;
+    locationname = mydata.Yaxis;
+    scriptSeen = 1;
+  }
+
   //Yaxis code
-  var ydatabase = document.getElementById('database' + n).value;
+  else if (n == 1 || n == 2) { //not from showToolTip
+    ydatabase = document.getElementById('database' + n).value;
+    //Location code
+    locationname = document.getElementById('yaxis' + n).value;
 
-  //Location code
-  var locationname = document.getElementById('yaxis' + n).value;
+    //Range code
+    ranges = document.getElementById('range' + n).value;
+    rangesarray = ranges.split(';');
+    rangestart = rangesarray[0];
+    var rangesend = rangesarray[1];
 
-  //Range code
-  var ranges = document.getElementById('range' + n).value;
-  rangesarray = ranges.split(';');
-  var rangestart = rangesarray[0];
-  var rangesend = rangesarray[1];
+    gtypedata = document.getElementById('gtype' + n).value;
+    colordata = document.getElementById('colorButton' + n).value;
+    drivingQuestion = document.getElementById('textinput2').value;
+//    console.log(drivingQuestion);
+    isDropDown = 0;
+    if (drivingQuestion == "") {
+      drivingQuestion = null;
+      isDropDown = 1;
+    }
+    var notes = document.getElementById('notes').value;
+    hasNotes = 1;// ?
 
-  //Graphtype code
-  var gtypedata = document.getElementById('gtype' + n).value;
-
-   //Graphtype code
-  var 
-  colordata = document.getElementById('colorButton' + n).value;
+    if (notes == "") {
+      hasNotes = 0;
+    }
+    //getting called when we don't want to
+    if (savedNum == "saved") {
+      savedGraphNum = n;
+    }
+    else if (savedNum == "export") {
+      exportNum = n;
+    }
+  }
+  else if (n == -1) {
+    scriptSeen = -1; //deleted graph
+  }
 
   var submitdata = {
     'sessionid': sessionid,
@@ -1289,27 +1478,235 @@ function sendData(n) {
     'highdate': rangesend,
     'graphtype': gtypedata,
     'color': colordata,
+    'drivingQuestion': drivingQuestion,
+    'isDropDown': isDropDown,
+    'hasNotes': hasNotes,
+    'scriptSeen': scriptSeen,
+    'savedGraphNum': savedGraphNum,
+    'exportNum': exportNum,
+    'customCode': ID,
   };
+
   logs.push(submitdata);
-  // console.log(submitdata);
 
   //Send data to php code
-    var submitdatastr = JSON.stringify(submitdata);
-    // console.log(submitdatastr);
+  var submitdatastr = JSON.stringify(submitdata);
 
+  $.ajax({
+    url: '../data.php',
+    type: 'POST',
+    data: { submitdata: submitdatastr },
+    success: function (response) {
+//      alert('info sent to database');
+      //alert(response.message);
+      
+    },
+    error: function (XMLHttpRequest, textStatus, errorThrown) {
+//      alert('Status: 1' + textStatus + savedNum);
+//      alert('Error: ' + errorThrown); //error msg
+    },
+  });
+
+
+  ydatabase = null;
+  locationname = null;
+  ranges = null;
+  rangestart = null;
+  rangesend = null;
+  gtypedata = null;
+  colordata = null;
+  drivingQuestion = null;
+  isDropDown = null;
+  hasNotes = null;
+  scriptSeen = null;
+  savedGraphNum = null;
+  exportNum = null;
+
+
+}//send data
+
+
+//go to historyindata.org/dv4l/getData.php to get all the data from mySQL
+function getData() {
+  $.ajax({
+    url: '../getData.php',
+    type: 'GET',
+    //data: { submitdata: submitdatastr },
+    success: function (response) {
+      //do whatever.
+      alert('Its done!');
+      //alert(response.message);
+      console.log(response);
+    },
+    error: function (XMLHttpRequest, textStatus, errorThrown) {
+      alert('Status: 2' + textStatus);
+      alert('Error: ' + errorThrown); //error?
+    },
+  });
+}
+
+
+
+var ID = null;
+
+//use the php id from the url to configure the databases and the driving questions
+function configureCustomDV4L(id){
+    
+    ID = id;
+    
+//    alert(id); 
+    var idPHP = JSON.stringify(id);
+    
+    
+    //search in the database for matching primary key(id)
     $.ajax({
-      url: '../data.php',
+      url: '../getCustomInfo.php',
       type: 'POST',
-      data: { submitdata: submitdatastr },
-      success: function (response) {
-        //do whatever.
-        //alert('Its done!');
-        //alert(response.message);
-        console.log(response);
+      data: { idPHP: id },
+      success: function (data) {
+          
+//          console.log(data);
+          
+       var newData = data.split("|");
+
+        var databases = newData[0].split(",");
+        
+          var dqs = newData[1].split(",");
+
+          useCustomDatabases(databases);
+          useCustomDQs(dqs);
+      
+      
       },
       error: function (XMLHttpRequest, textStatus, errorThrown) {
-        alert('Status: ' + textStatus);
-        alert('Error: ' + errorThrown);
+        alert('Status: 3' + textStatus);
+        alert('Error:' + errorThrown); //error?
       },
     });
+    
+    
+    
+
+    
+
+    
+    
+  
 }
+
+function useCustomDatabases(databases){
+    
+    database_dict = {
+        
+        "Instructor Selected Databases" : databases,
+        
+    };
+    
+
+    var dbMenu1 = document.getElementById('database1');
+    var dbMenu2 = document.getElementById('database2');
+
+
+    dbMenu1.innerHTML = "";
+    dbMenu2.innerHTML = "";
+
+    //have both database menus state that they are using a custom list
+    var option = document.createElement('option');
+
+    option.appendChild(document.createTextNode("Instructor Selected Databases"));
+    option.value = "Custom Selected Databases";
+    option.selected = true;
+    option.disabled = true;
+    dbMenu1.appendChild(option);
+
+    option = document.createElement('option');
+
+    option.appendChild(document.createTextNode("Instructor Selected Databases"));
+    option.value = "Custom Selected Databases";
+    option.selected = true;
+    option.disabled = true;
+    dbMenu2.appendChild(option);
+
+
+    //populate the drop down menus
+    for(var i = 0; i < databases.length; i++){
+
+
+        //1
+        var option = document.createElement('option');
+        option.appendChild(document.createTextNode(databases[i]));
+        option.value = databases[i];
+        dbMenu1.appendChild(option);
+
+        //2
+        option = document.createElement("option");
+        option.appendChild(document.createTextNode(databases[i]));
+        option.value = databases[i];
+        dbMenu2.appendChild(option);
+
+    }
+    
+}
+
+//populate driving questions with what the teacher chose
+function useCustomDQs(dqs){
+    
+    console.log("here");
+    console.log(dqs);
+    console.log(dqs.length);
+    
+    var dqDiv = document.getElementById("textinput");
+    dqDiv.innerHTML = "";
+    
+    var title = document.createElement("option");
+    title.appendChild(document.createTextNode("Instructor Selected Driving Questions"));
+    title.value = 0;
+    title.selected = true;
+    title.disabled = true;
+    dqDiv.appendChild(title);
+    
+    
+    for(var i = 0; i < dqs.length; i++){
+        
+        var option = document.createElement('option');
+        
+        
+        
+        option.appendChild(document.createTextNode(dqs[i]));
+        option.value = dqs[i];
+        dqDiv.appendChild(option);
+        
+    }
+    
+    
+}
+
+
+//called when the tab is closed, used to find out how long a user spent on dv4l
+window.addEventListener('beforeunload', function(event) {
+//    alert("hi");
+    sendData(200, -1);
+    
+      });
+
+
+//displays an alert with the source of the database
+function displaySource(graphNum){
+    
+    var database = document.getElementById("database" + graphNum);
+    
+    if(source_dict[database.value] == undefined){
+        alert("No Source Found For: " + database.value);
+    } else {
+        
+        alert(database.value + " Database Source: \n" + source_dict[database.value]);
+        
+        
+    }
+    
+    
+    
+    
+}
+
+

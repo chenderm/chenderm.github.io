@@ -1,10 +1,14 @@
 var savedGraphs = [];
 var savedGraphColor = undefined;
+var isDeleted = [false, false, false, false, false, false, false, false, false, false];
+var dragging = [false, false];
 
 //When the page first loads.
-$(document).ready( function() {
+$(document).ready(function () {
     for (var i = 0; i < 10; i++) {
+
         savedGraphs.push(undefined);
+
     }
     savedGraphColor = "#524636";
 });
@@ -32,6 +36,8 @@ function saveGraph(saveNum, graphNum, swap) {
         tempGraph = graph1;
     else
         tempGraph = graph2;
+    
+    //console.log(tempGraph);
     var labelsArr = tempGraph.config.data.labels;
     var dataArr = tempGraph.config.data.datasets[0].data;
     var hoverText = tempGraph.description;
@@ -45,14 +51,28 @@ function saveGraph(saveNum, graphNum, swap) {
     var graph_type = tempGraph.type;
     var color = tempGraph.color;
 
+    
+    var hiddenInfo = {
+        data: dataArr,
+        labels: labelsArr
+    }
+    console.log(JSON.stringify(hiddenInfo));
+
+    document.getElementById("hiddenInfo" + saveNum).innerHTML = JSON.stringify(hiddenInfo);
+    document.getElementById("hiddenInfo" + saveNum).style.visibility = "hidden";
+
+
     //check if current graph is already saved somewhere
     for (var i = 0; i < savedGraphs.length; i++) {
         if (savedGraphs[i] != undefined && hoverText == savedGraphs[i].description) {
             if (!swap) {
+                dragging[i] = false;
                 alert("Graph " + graphNum + " is already saved at box #" + (i + 1));
             }
             document.getElementById("exit" + saveNum).style.visibility = "hidden";
             document.getElementById("swap" + saveNum).style.visibility = "hidden";
+            document.getElementById("cust" + saveNum).style.visibility = "hidden";
+
             return;
         }
     }
@@ -116,6 +136,7 @@ function saveGraph(saveNum, graphNum, swap) {
     //display x and swap buttons next to saved region
     document.getElementById("exit" + saveNum).style.visibility = "visible";
     document.getElementById("swap" + saveNum).style.visibility = "visible";
+    document.getElementById("cust" + saveNum).style.visibility = "visible";
 }
 
 //Transfers a saved graph to one of the main graphs,
@@ -133,7 +154,7 @@ function swap(savedNum, graphNum) {
     var savedColor = savedGraph.color;
 
     saveGraph(savedNum, graphNum, false);
-    
+
     //update menus on the left side and graph data
     setOptions(savedDB, savedY, savedX, savedType, savedLowDate, savedHighDate, savedMinDate, savedMaxDate, graphNum, savedColor, true);
 }
@@ -174,14 +195,14 @@ function relocate(prevSave, nextSave) {
             type: prevGraphType,
             options: {
                 scales: {
-                    xAxes: [{display: false}],
-                    yAxes: [{display: false}],
+                    xAxes: [{ display: false }],
+                    yAxes: [{ display: false }],
                 },
-                legend: {display: false},
+                legend: { display: false },
                 responsive: true,
                 maintainAspectRatio: false,
                 tooltips: false,
-                animation: {duration: 0}
+                animation: { duration: 0 }
             },
             data: {
                 labels: prevLabelsArr,
@@ -218,6 +239,7 @@ function relocate(prevSave, nextSave) {
         //display x and swap buttons next to saved region
         document.getElementById("exit" + nextSave).style.visibility = "visible";
         document.getElementById("swap" + nextSave).style.visibility = "visible";
+        document.getElementById("cust" + nextSave).style.visibility = "visible";
     }
     else {  //swap saved graphs, as opposed to just moving one to an empty slot
         //temporarily store data
@@ -273,14 +295,14 @@ function relocate(prevSave, nextSave) {
             type: graphType1,
             options: {
                 scales: {
-                    xAxes: [{display: false}],
-                    yAxes: [{display: false}],
+                    xAxes: [{ display: false }],
+                    yAxes: [{ display: false }],
                 },
-                legend: {display: false},
+                legend: { display: false },
                 responsive: true,
                 maintainAspectRatio: false,
                 tooltips: false,
-                animation: {duration: 0}
+                animation: { duration: 0 }
             },
             data: {
                 labels: labelsArr1,
@@ -317,6 +339,7 @@ function relocate(prevSave, nextSave) {
         //display x and swap buttons next to saved region
         document.getElementById("exit" + nextSave).style.visibility = "visible";
         document.getElementById("swap" + nextSave).style.visibility = "visible";
+        document.getElementById("cust" + nextSave).style.visibility = "visible";
 
         //graph data in new region
         var canvas2 = document.getElementById("saved" + prevSave);
@@ -325,14 +348,14 @@ function relocate(prevSave, nextSave) {
             type: graphType2,
             options: {
                 scales: {
-                    xAxes: [{display: false}],
-                    yAxes: [{display: false}],
+                    xAxes: [{ display: false }],
+                    yAxes: [{ display: false }],
                 },
-                legend: {display: false},
+                legend: { display: false },
                 responsive: true,
                 maintainAspectRatio: false,
                 tooltips: false,
-                animation: {duration: 0}
+                animation: { duration: 0 }
             },
             data: {
                 labels: labelsArr2,
@@ -369,9 +392,13 @@ function relocate(prevSave, nextSave) {
         //display x and swap buttons next to saved region
         document.getElementById("exit" + prevSave).style.visibility = "visible";
         document.getElementById("swap" + prevSave).style.visibility = "visible";
+        document.getElementById("cust" + nextSave).style.visibility = "visible";
     }
 }
-
+//changes bool to true if we are deleting the saved graph
+function changeBool(num) {
+    isDeleted[num - 1] = true;
+}
 //Removes a graph from the saved section
 //Runs when the user clicks the x next to a saved region
 function deleteGraph(savedNum) {
@@ -389,18 +416,56 @@ function deleteGraph(savedNum) {
     //clears exit and swap buttons
     document.getElementById("exit" + savedNum).style.visibility = "hidden";
     document.getElementById("swap" + savedNum).style.visibility = "hidden";
+    document.getElementById("cust" + savedNum).style.visibility = "hidden";
+    isDeleted[savedNum - 1] = false;
+    sendData(-1, -100);//second param is a dummy val
 }
 
 //Shows tooltip over saved graph
 //Runs when the user clicks a saved graph
 function showToolTip(savedNum) {
+    //    alert("in show tool tip");
     var tip = document.getElementById("tip" + savedNum);
-    if (tip.style.visibility != "visible")
+    if (isDeleted[savedNum - 1]) {
+        deleteGraph(savedNum);
+        return;
+    }
+    if (tip.style.visibility != "visible") {//hidden turn visible
         tip.style.visibility = "visible";
+        //var scriptSeen = 1;
+        sendData(0, savedNum);
+        //console.log("data sent - shown tool tip");
+    }
     else
         tip.style.visibility = "hidden";
 }
 
+//set to false wheter it makes its destination or not
+function dropEnd() {
+    setTimeout(function () {
+        dragging[0] = false;
+        dragging[1] = false;
+    }, 5);
+
+}
+
+//if graph makes the destination, we sendData, set to false
+function droppedDest() {
+    window.setTimeout(function () {
+        if (dragging[0] == true) {
+            sendData(1, "saved");
+            dragging[0] = false;
+        }
+        else if (dragging[1] == true) {
+            sendData(2, "saved");
+            dragging[1] = false;
+        }
+    }, 10);
+}
+
+function dragstart(graphNum) {
+    dragging[graphNum - 1] = true;
+}
 //Runs when dragging to save a graph into a saved region
 //It's mostly syntax
 function drag(ev, graph) {
@@ -410,17 +475,25 @@ function drag(ev, graph) {
 //Runs when dropping a graph over a saved region
 function drop(ev, destination) {
     ev.preventDefault();
-    
+
     var data = ev.dataTransfer.getData("text");
     if (data.startsWith("graph")) { //drag from regular view
-        if (destination.startsWith("graph")) {  //drag from regular view to regular view
-            //do nothing
-        }
-        else if (destination.startsWith("saved")) { //drag from regular view to saved region
+        //if (destination.startsWith("graph")) {  //drag from regular view to regular view
+        //do nothing
+        //}
+        //else 
+        if (destination.startsWith("saved")) { //drag from regular view to saved region
             var graphNum = data.substring(5);
             var saveNum = destination.substring(5);
-            if (savedGraphs[saveNum - 1] == undefined || savedGraphs[saveNum - 1] == null)  //second saved region is empty
-                saveGraph(saveNum, graphNum, false)
+            if (savedGraphs[saveNum - 1] == undefined || savedGraphs[saveNum - 1] == null) { //second saved region is empty
+                saveGraph(saveNum, graphNum, false);
+
+                //                sendData(destination, 0);
+
+                //sendData(destination, 0);
+
+                //alert(destination);
+            }
             else    //second saved region has a graph already
                 swap(saveNum, graphNum);
         }
@@ -455,7 +528,11 @@ function changeColorTheme(element) {
     if (element.checked) {  //dark theme chosen
         //change color for graph text
         Chart.defaults.global.defaultFontColor = "white";
-
+        
+        //change notes background color
+        var notes = document.getElementById("notes");
+        notes.style.backgroundColor = "black";
+        
         //redraw graphs 1 and 2
         regraph(1);
         regraph(2);
@@ -529,6 +606,10 @@ function changeColorTheme(element) {
         //change color for graph text
         Chart.defaults.global.defaultFontColor = "#524636";
         
+        //change notes background color
+        var notes = document.getElementById("notes");
+        notes.style.backgroundColor = "white";
+
         //redraw graphs 1 and 2
         regraph(1);
         regraph(2);
@@ -573,7 +654,7 @@ function changeColorTheme(element) {
         //change color of saved region boxes
         x = document.getElementsByClassName("tile");
         for (var y = 0; y < x.length; y++) {
-            x[y].style.border= "1px solid #524636";
+            x[y].style.border = "1px solid #524636";
         }
 
         //change color of delete buttons for saved graphs
@@ -613,7 +694,7 @@ function resave(saveNum) {
     else if (savedGraph != null)
         savedGraph.destroy();
     savedGraph[saveNum - 1] = undefined;
-    
+
     //temporarily store values
     var labelsArr = savedGraph.config.data.labels;
     var dataArr = savedGraph.config.data.datasets[0].data;
@@ -680,19 +761,27 @@ function resave(saveNum) {
     //display exit and swap buttons for saved region
     document.getElementById("exit" + saveNum).style.visibility = "visible";
     document.getElementById("swap" + saveNum).style.visibility = "visible";
+    document.getElementById("cust" + nextSave).style.visibility = "visible";
 }
 
 //Exports current graph into new page
 //This runs when the export button is clicked
 function exportGraph(n) {
     var tempGraph = undefined;
-    if (n == 1)
+
+    if (n == 1) {
         tempGraph = graph1;
-    else if (n == 2)
+        sendData(1, "export");
+    }
+    else if (n == 2) {
         tempGraph = graph2;
+        sendData(2, "export");
+    }
 
     sessionStorage.setItem("labelsArr", tempGraph.config.data.labels);
+    console.log(tempGraph.config.data.labels)
     sessionStorage.setItem("dataArr", tempGraph.config.data.datasets[0].data);
+    console.log(tempGraph.config.data.datasets[0].data);
     sessionStorage.setItem("db", tempGraph.DB);
     sessionStorage.setItem("x", tempGraph.X);
     sessionStorage.setItem("y", tempGraph.Y);
@@ -702,11 +791,56 @@ function exportGraph(n) {
     sessionStorage.setItem("maxDate", tempGraph.maxDate);
     sessionStorage.setItem("graph_type", tempGraph.type);
     sessionStorage.setItem("color", tempGraph.color);
+    sessionStorage.setItem("citation", "test");
 
-    window.open("/export.html", "_blank");
+    window.open("/dv4l/export.html", "_blank");
 }
 
-function exportNotes(){
+
+//exports all the saved graphs 
+//loops through all saved and updates session storage
+function exportAll(){
+
+    for (let i = 1; i < 11; i++){ 
+        let tipid = "tip" + String(i);
+        let tooltip  = document.getElementById(tipid); 
+
+        //if there is a graph saved at this slot
+        if(tooltip.innerHTML != "") {
+
+            console.log("tooltip " + i + " exists");
+            let temp = tooltip.innerHTML.replace(/\&nbsp;/g, '')
+            graphInfo = JSON.parse(temp.replace(/\<br>/g, ''))
+
+            console.log(graphInfo)
+            console.log(graphInfo.DB)
+
+            //get labels and data arr from html div
+            hiddenInfo = document.getElementById("hiddenInfo" + String(i)).innerHTML;
+
+            hiddenInfo = JSON.parse(String(hiddenInfo))
+           
+
+            console.log(hiddenInfo["labels"])
+
+            console.log(hiddenInfo["data"])
+
+            // update session storage
+            sessionStorage.setItem("labelsArr" + i , hiddenInfo["labels"]);
+            sessionStorage.setItem("dataArr" + i, hiddenInfo["data"]);
+            sessionStorage.setItem("db" + i, graphInfo.DB);//y axis
+            sessionStorage.setItem("lowDate" + i, graphInfo.lowDate);//x
+            sessionStorage.setItem("highDate" + i, graphInfo.highDate);
+            sessionStorage.setItem("graph_type" + i, graphInfo.gtype);
+            sessionStorage.setItem("location" + i, graphInfo.Yaxis);
+        }
+
+    }
+
+    window.open("/exportAll.html", "_blank");
+}
+
+function exportNotes() {
     var txt = document.getElementById('notes').value;
     txt = txt.replace(/\r?\n/g, '<br />');
     sessionStorage.setItem("notesarea", txt);
@@ -720,7 +854,7 @@ function addNotes(element) {
     var c = document.getElementById("hide3");
     var d = document.getElementById("hide4");
 
-    if (element.checked) { 
+    if (element.checked) {
         x.style.display = "block";
         a.style.display = "none"
         b.style.display = "none"
@@ -735,14 +869,1018 @@ function addNotes(element) {
     }
 }
 
-function addDrivingQuestion(){
+function addDrivingQuestion() {
     var input = document.getElementById('textinput')
-    var div = document.getElementById('textEntered');        
-    div.innerHTML = input.value;
+    var div = document.getElementById('textEntered');
+
+    console.log(input.value);
+    if (input.value == "Select Driving Question") {
+
+        console.log("hello");
+        div.innerHTML = "Not Selected";
+        suggestDatabases("Not Selected");
+
+    } else {
+
+        div.innerHTML = input.value;
+        suggestDatabases(input.value);
+
+    }
+
+
+
 }
 
-function addDrivingQuestion2(){
+function addDrivingQuestion2() {
+
     var input = document.getElementById('textinput2')
-    var div = document.getElementById('textEntered');        
+    var div = document.getElementById('textEntered');
     div.innerHTML = input.value;
+
+
+    if (div.innerHTML == "") {
+        div.innerHTML = "Not Selected";
+    }
+
+    suggestDatabases(input.value);
+
+
+
 }
+
+function clearDrivingQuestion() {
+
+    //drop down clear
+
+    var input = document.getElementById('textinput')
+    var div = document.getElementById('textEntered');
+
+    input.value = "Select Driving Question"
+
+    //text field clear
+
+    input = document.getElementById('textinput2')
+    input.value = ""
+
+    //update home dq component
+
+    div.innerHTML = "Not Selected"
+
+
+}
+
+//finds the most relevant databases to return, and populates the checkboxlist
+function suggestDatabases(query) {
+
+    //cleaned Query will become a list of words in the query
+    var cleanedQuery = parseAndClean(query);
+
+    //database_dict is defined in common.js, it contains the default databases
+
+    //keyword_dict is defined at the end of this file, it contains the keyword mappings for the databases
+
+    //holds the scores of different databases
+    var databaseScores = {
+
+
+        'Populations': 0,
+        'Population Female Percentage': 0,
+        'Population Female Percentage at Birth': 0,
+        'Life Expectancy - Continents': 0,
+        'Median Age': 0,
+        'Births': 0,
+        'Births Per Woman': 0,
+        'Births Per 1000 People': 0,
+        'Child Deaths': 0,
+        'Child Mortality Rates': 0,
+        'Survival Rate to Age 65 - Male': 0,
+        'Survival Rate to Age 65 - Female': 0,
+
+
+        'Military Personnel': 0,
+        'Military Personnel Percent of Population': 0,
+        'Military Spending': 0,
+        'Military Spending Percent of GDP': 0,
+        'Military Spending in thousands of US dollars': 0,
+
+        'GDP': 0,
+        'GDP Per Capita': 0,
+        'Economic Freedom Scores': 0,
+
+
+
+        'CO2 Emissions': 0,
+        'CO2 Emissions Per Capita': 0,
+        'CO2 Emissions Percentages': 0,
+        'CO2 Emissions Cumulative': 0,
+        'CO2 Emissions Cumulative Percentages': 0,
+        'Battle Related Deaths in State Based Conflicts': 0,
+        'Nuclear Warhead Inventory in Nuclear Powers': 0,
+        'Registered Mobile Money Accounts': 0,
+
+
+    };
+
+
+
+
+    //go through the cleaned query and assign each database a score based on keywords
+    for (var word in cleanedQuery) {
+
+        for (var key in keyword_dict) {
+
+            for (var i = 0; i < keyword_dict[key].length; i++) {
+
+                if (cleanedQuery[word] == keyword_dict[key][i]) {
+
+                    databaseScores[key]++;
+
+                }
+
+            }
+
+        }
+
+    }
+
+
+
+    var sorted = sortScores(databaseScores);
+
+
+
+    //list of suggested databases
+    var suggestions = [];
+
+    //populate with all non zero score databases
+    for (var i = 0; i < sorted.length; i++) {
+        if (sorted[i][1] > 1) {
+
+            if (ID == null || database_dict["Instructor Selected Databases"].includes(sorted[i][0])) {
+                suggestions.push(sorted[i][0]);
+            }
+
+        }
+    }
+
+    //    console.log(suggestions);
+
+    populateCheckboxList(suggestions);
+
+
+}
+
+
+
+function sortScores(obj) {
+    // convert object into array
+    var sortable = [];
+    for (var key in obj)
+        if (obj.hasOwnProperty(key))
+            sortable.push([key, obj[key]]);
+
+    // sort items by value
+    sortable.sort(function (a, b) {
+        return b[1] - a[1];
+    });
+
+
+    //    console.log(sortable);
+
+    return sortable; // array in format [ [ key1, val1 ], [ key2, val2 ], ... ]
+}
+
+//seperates query into list of words, removes punctuation, uppercase, and stop words
+function parseAndClean(query) {
+
+    query = query.toLowerCase();
+
+    //splits string into list of words
+    var cleanedQuery = query.trim().split(" ");
+
+    //removes punctuation from words
+
+    for (var i = 0; i < cleanedQuery.length; i++) {
+        var orig = cleanedQuery[i];
+        var temp = orig.replace(/[.,\/#!?$%\^&\*;:{}=\-_~()]/g, "");
+        cleanedQuery[i] = temp.replace(/\s{2,}/g, " ");
+    }
+
+
+    return cleanedQuery;
+
+
+}
+
+
+////populate database dropdown menus with the selected databases
+//function useSuggestedDatabase(){
+//
+//    var database = document.getElementById('suggestedDBs');
+//
+//    if(database.value == "No Suggested Databases"){
+//        return;
+//    }
+//
+//    var graph1Menu = document.getElementById('database1');
+//
+//    for(var i = 0; i < graph1Menu.options.length; i++){
+//
+//        if(graph1Menu.options[i].value == database.value){
+//            graph1Menu.options[i].selected = true;
+//        }
+//
+//    }
+//
+//
+//    submitGraphData(1);
+//
+//
+//}
+
+//global var to keep track of the selected databases
+var selected = [];
+
+function populateCheckboxList(suggestedDatabases) {
+
+    var div = document.getElementById('textEntered');
+    var checkboxList = document.getElementById('checkboxlist');
+    var label = document.getElementById('checkboxLabel');
+
+
+
+
+    //have to clear previous options first
+    checkboxList.innerHTML = "";
+
+    //populate checklist with all databases, if there is a driving question suggest DBs
+    if (div.innerHTML == "Not Selected" || suggestedDatabases == null) {
+
+
+        label.innerHTML = "All Databases:";
+
+
+
+        for (var key in database_dict) {
+            var value = database_dict[key];
+
+            for (var index = 0; index < value.length; index++) {
+                var option = document.createElement('option');
+                var title = document.createElement("label");
+                var description = document.createTextNode(value[index]);
+                var checkbox = document.createElement("input");
+
+                checkbox.type = "checkbox";
+                checkbox.name = index;
+                checkbox.addEventListener("click", updateSelected);
+                title.className = "checkTitle";
+                checkbox.className = "check";
+
+
+
+                for (var i = 0; i < selected.length; i++) {
+
+                    if (selected[i] == value[index]) {
+                        checkbox.checked = true;
+                    }
+
+                }
+
+                title.appendChild(checkbox);
+                title.appendChild(description);
+                checkboxList.appendChild(title);
+
+            }
+
+
+        }
+
+    } else {
+
+       
+
+        //populate checkboxlist with suggested databases
+
+        label.innerHTML = "Suggested Databases:";
+
+        if (suggestedDatabases.length > 0) {
+
+            //display text to seperate suggested and all databases
+            var title = document.createElement("strong");
+            var description = document.createTextNode("Suggested Databases:\n");
+ 
+            title.className = "break";
+ 
+            title.appendChild(description);
+            checkboxList.appendChild(title);
+
+        }
+
+       
+
+        //display suggested databases
+        for (var i = 0; i < suggestedDatabases.length; i++) {
+
+            var option = document.createElement('option');
+            var title = document.createElement("label");
+            var db = suggestedDatabases[i]// + "test"
+            var description = document.createTextNode(db);
+            var checkbox = document.createElement("input");
+
+            checkbox.type = "checkbox";
+            checkbox.name = index;
+            checkbox.addEventListener("click", updateSelected);
+            title.className = "checkTitle";
+            checkbox.className = "check";
+
+
+
+
+
+            for (var j = 0; j < selected.length; j++) {
+                if (selected[j] == suggestedDatabases[i]) {
+                    checkbox.checked = true;
+                }
+            }
+
+
+            title.appendChild(checkbox);
+            title.appendChild(description);
+            checkboxList.appendChild(title);
+
+        }
+
+
+
+        //display text to seperate suggested and all databases
+        var title = document.createElement("strong");
+        var description = document.createTextNode("All Databases:");
+
+        title.className = "break";
+
+        title.appendChild(description);
+        checkboxList.appendChild(title);
+
+
+        //Display the rest of the databases
+
+        for (var key in database_dict) {
+            var value = database_dict[key];
+
+            for (var index = 0; index < value.length; index++) {
+                var option = document.createElement('option');
+                var title = document.createElement("label");
+                var description = document.createTextNode(value[index]);
+                var checkbox = document.createElement("input");
+
+                checkbox.type = "checkbox";
+                checkbox.name = index;
+                checkbox.addEventListener("click", updateSelected);
+                title.className = "checkTitle";
+                checkbox.className = "check";
+
+
+
+                for (var i = 0; i < selected.length; i++) {
+
+                    if (selected[i] == value[index]) {
+                        checkbox.checked = true;
+                    }
+
+                }
+
+                title.appendChild(checkbox);
+                title.appendChild(description);
+                checkboxList.appendChild(title);
+
+            }
+
+
+        }
+
+
+
+
+        if (checkboxList.innerHTML == "") {
+
+            checkboxList.innerHTML = "No Suggested Databases";
+
+
+
+        }
+
+
+
+
+    }
+
+}
+
+
+
+
+//updates the list of selected databases to be used from the driving question popup
+function updateSelected() {
+
+    console.log("in update selected")
+
+    var checks = document.getElementsByClassName("check");
+    var checkTitle = document.getElementsByClassName("checkTitle");
+
+
+
+    //go through the checkboxes and make a list of the selected ones
+    for (var i = 0; i < checks.length; i++) {
+
+
+        //if checked ensure that it is in the selected list
+        if (checks[i].checked === true) {
+            var add = 1;
+            for (var j = 0; j < selected.length; j++) {
+
+                if (selected[j] == checkTitle[i].innerText) {
+                    add = 0;
+                }
+
+            }
+
+            if (add) {
+                selected.push(checkTitle[i].innerText);
+
+                //ensure that the other instance of this db is checked (incase it is selected from the suggested list)
+                for(var t = 0; t < checks.length; t++) {
+
+                    if(checkTitle[t].innerText == checkTitle[i].innerText){
+                        checks[t].checked = true
+                    }
+
+                }
+
+            }
+
+        } else {
+
+            //if unchecked ensure that it is not in the selected list
+
+            for (var j = 0; j < selected.length; j++) {
+
+                if (selected[j] == checkTitle[i].innerText) {
+
+                    selected.splice(j, 1);
+                }
+
+            }
+
+        }
+
+
+    }
+
+    //update the content of the "selected databases" div
+    populateSelected(selected);
+
+
+}
+
+function populateSelected(databaseList) {
+    var selectedList = document.getElementById("selectedList");
+    selectedList.innerHTML = '';
+
+    for (var i = 0; i < databaseList.length; i++) {
+
+
+        var title = document.createElement("label");
+        var description = document.createTextNode(databaseList[i]);
+
+        var name = databaseList[i];
+
+        //        title.addEventListener("click", function(){
+        //           deleteSelected(name);
+        //        }, false);
+
+        title.addEventListener("click", deleteSelected, false);
+
+        title.appendChild(description);
+        selectedList.appendChild(title);
+
+
+
+    }
+
+    if (selectedList.innerHTML == '') {
+        selectedList.innerHTML = 'No Selected Databases';
+    }
+
+}
+
+function deleteSelected() {
+
+    console.log(this.innerHTML);
+
+    var dbName = this.innerHTML;
+
+    var index = selected.indexOf(dbName);
+
+    if (index > -1) {
+        selected.splice(index, 1);
+    }
+
+    populateSelected(selected);
+
+    var div = document.getElementById('textEntered');
+    console.log(div.innerHTML);
+    console.log(selected);
+
+    suggestDatabases(div.innerHTML);
+
+}
+
+
+//populate database dropdown menus with the selected databases
+function useSelected(custom) {
+
+    var dbMenu1 = document.getElementById('database1');
+    var dbMenu2 = document.getElementById('database2');
+
+
+    dbMenu1.innerHTML = "";
+    dbMenu2.innerHTML = "";
+
+    var menuDisplay = "Custom Selected Databases"
+
+    if(custom){
+        menuDisplay = "All Databases"
+    }
+
+    //have both database menus state that they are using a custom list
+    var option = document.createElement('option');
+
+    option.appendChild(document.createTextNode(menuDisplay));
+    option.value = menuDisplay;
+    option.selected = true;
+    option.disabled = true;
+    dbMenu1.appendChild(option);
+
+    option = document.createElement('option');
+
+    option.appendChild(document.createTextNode(menuDisplay));
+    option.value = menuDisplay;
+    option.selected = true;
+    option.disabled = true;
+    dbMenu2.appendChild(option);
+
+
+    //populate the drop down menus
+    for (var i = 0; i < selected.length; i++) {
+
+        var option = document.createElement('option');
+
+        option.appendChild(document.createTextNode(selected[i]));
+        option.value = selected[i];
+        dbMenu1.appendChild(option);
+
+        option = document.createElement("option");
+        option.appendChild(document.createTextNode(selected[i]));
+        option.value = selected[i];
+
+
+
+        dbMenu2.appendChild(option);
+
+    }
+
+    //close the popup
+    closeModal();
+}
+
+function useAllDBs() {
+
+    var checks = document.getElementsByClassName("check");
+    var checkTitle = document.getElementsByClassName("checkTitle");
+
+    selected = [] 
+
+    //select all databases
+    for (var i = 0; i < checks.length; i++) {
+        
+        selected.push(checkTitle[i].innerText);
+
+    }
+
+    populateSelected(selected)
+
+    //populate drop down menus and close modal 
+    useSelected(true);
+
+
+}
+
+
+//allow students to edit their graph json with a custom dv4l scripting link
+function customize(n) {
+
+
+
+    //insert graph data into an sql database using our session id as the key
+    var key = rstring;
+    var jsonCode = document.getElementById("tip" + n);
+
+    console.log(jsonCode.textContent);
+
+    var submitdata = {
+
+        'sessionid': key,
+        'json': jsonCode.textContent,
+
+    };
+
+    var submitdatastr = JSON.stringify(submitdata);
+
+    $.ajax({
+        url: '../customScripting.php',
+        type: 'POST',
+        data: { submitdata: submitdatastr },
+        success: function (data) {
+            //alert('info sent to database');
+            //        alert(response.message);
+
+            console.log(data);
+
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+            alert('Status: 4' + textStatus);
+            alert('Error: ' + errorThrown); //error msg
+        },
+    });
+
+
+
+
+
+}
+
+
+
+//defining the keywords for each database
+//there may be some repeated words in the dictionary because some words carry extra value
+//note: all keywords should be entered in lowercase
+var keyword_dict = {
+    'Populations': [
+        'population', 'population', 'population',
+        'populations', 'populations', 'populations', 'populations',
+        'populated', 'populated',
+        'populus',
+        'industrial',
+    ],
+    'Population Female Percentage': [
+        'population', 'population', 'population',
+        'populations', 'populations',
+        'populated', 'populated',
+        'female', 'female',
+        'females',
+        'women',
+        'girl',
+        'girls',
+        'percentage'
+    ],
+    'Population Female Percentage at Birth': [
+        'population', 'population',
+        'populations',
+        'populated',
+        'female', 'female',
+        'females',
+        'women',
+        'girl',
+        'girls',
+        'percentage',
+        'birth', 'birth',
+        'child',
+        'infant',
+        'pastoral',
+    ],
+
+    'Life Expectancy - Continents': [
+        'life', 'life', 'life',
+        'expectancy', 'expectancy', 'expectancy',
+        'continents', 'continents', 'continents',
+        'mortality',
+        'death',
+        'dying',
+        'living', 'living',
+
+        'pastoral',
+
+    ],
+    'Median Age': [
+        'population',
+        'median',
+        'age',
+        'median',
+        'age',
+
+    ],
+    'Births': [
+        'birth', 'birth',
+        'births', 'births',
+        'expectancy',
+        'population',
+        'death',
+        'dying',
+
+
+    ],
+
+    'Births Per Woman': [
+        'birth',
+        'births', 'births',
+        'expectancy',
+        'continents',
+        'population',
+        'death',
+        'dying',
+        'woman', 'woman',
+        'women',
+
+    ],
+
+    'Births Per 1000 People': [
+        'birth',
+        'births', 'births',
+        'expectancy',
+        'continents',
+        'population',
+        '1000',
+        'people',
+        '1000',
+        'people',
+
+    ],
+
+    'Child Deaths': [
+
+        'child',
+        'deaths',
+        'child',
+        'deaths',
+        'population',
+
+    ],
+
+    'Child Mortality Rates': [
+
+        'child', 'child',
+        'mortality', 'mortality',
+        'rates', 'rates',
+        'birth',
+
+    ],
+    'Survival Rate to Age 65 - Male': [
+
+
+        'survival',
+        'rate',
+        'age',
+        '65',
+        'male',
+        'survival',
+        'rate',
+        'age',
+        '65',
+        'male',
+        'sixty',
+        'five',
+        'sixty-five',
+
+    ],
+
+
+    'Survival Rate to Age 65 - Female': [
+
+        'survival',
+        'rate',
+        'age',
+        '65',
+        'female',
+        'survival',
+        'rate',
+        'age',
+        '65',
+        'female',
+        'sixty',
+        'five',
+        'sixty-five',
+
+    ],
+
+    'Military Personnel': [
+        'military',
+        'personnel',
+        'military',
+        'personnel',
+        'soldiers',
+
+    ],
+
+    'Military Personnel Percent of Population': [
+
+        'military',
+        'personnel',
+        'percent',
+        'population',
+        'military',
+        'personnel',
+        'percent',
+        'population'
+
+
+    ],
+
+    'Military Spending': [
+
+        'military',
+        'spending',
+        'military',
+        'spending',
+        'army',
+        'cost',
+        'expense',
+        'budget',
+        'economy'
+
+
+    ],
+
+    'Military Spending Percent of GDP': [
+
+        'military',
+        'spending',
+        'army',
+        'cost',
+        'expense',
+        'budget',
+        'gdp',
+        'percent',
+
+
+
+    ],
+
+    'Military Spending in thousands of US dollars': [
+
+        'military',
+        'spending',
+        'army',
+        'cost',
+        'expense',
+        'budget',
+        'thousands',
+        'US',
+        'dollars',
+
+
+    ],
+
+    'GDP': [
+
+        'gdp', 'gdp', 'gdp', 'gdp',
+        'gross',
+        'domestic',
+        'product',
+        'spending',
+        'budget', 'budget',
+        'dollars',
+        'money',
+        'economy', 'economy',
+
+
+    ],
+
+    'GDP Per Capita': [
+
+        'gdp', 'gdp', 'gdp', 'gdp',
+        'gross',
+        'domestic',
+        'product',
+        'spending',
+        'budget', 'budget',
+        'dollars',
+        'money',
+        'economy', 'economy',
+        'capita'
+
+
+    ],
+
+    'Economic Freedom Scores': [
+
+        'economic',
+        'freedom',
+        'scores',
+        'economy', 'economy',
+        'spend',
+        'spending',
+
+
+    ],
+
+    'CO2 Emissions': [
+
+        'CO2', 'CO2',
+        'emissions', 'emissions',
+        'carbon',
+        'emission',
+        'dioxide',
+
+
+    ],
+
+    'CO2 Emissions Per Capita': [
+
+        'CO2', 'CO2',
+        'emissions', 'emissions',
+        'carbon', 'carbon',
+        'emission',
+        'dioxide',
+
+        'capita',
+
+
+    ],
+
+    'CO2 Emissions Percentages': [
+
+        'CO2', 'CO2',
+        'emissions', 'emissions',
+        'carbon',
+        'emission',
+        'dioxide',
+        'percentages',
+
+    ],
+
+    'CO2 Emissions Cumulative': [
+
+        'CO2', 'CO2',
+        'emissions', 'emissions',
+        'carbon',
+        'emission',
+        'dioxide',
+        'cumulative',
+
+    ],
+
+    'CO2 Emissions Cumulative Percentages': [
+
+        'CO2', 'CO2',
+        'emissions', 'emissions',
+        'carbon',
+        'emission',
+        'dioxide',
+        'cumulative',
+        'percentages',
+
+    ],
+
+
+    'Battle Related Deaths in State Based Conflicts': [
+
+        'conflicts', 'conflicts',
+        'conflict', 'conflict',
+        'battle', 'battle',
+        'related',
+        'death',
+        'deaths',
+        'state',
+
+
+    ],
+
+    'Nuclear Warhead Inventory in Nuclear Powers': [
+
+        'nuclear', 'nuclear',
+        'warhead', 'warhead',
+        'nuke', 'nukes',
+        'power', 'powers',
+        'superpower',
+
+
+
+    ],
+
+    'Registered Mobile Money Accounts': [
+
+        'registered',
+        'mobile',
+        'money', 'money',
+        'account', 'account',
+        'accounts', 'accounts',
+
+    ],
+
+
+
+
+
+
+
+};

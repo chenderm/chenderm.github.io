@@ -8,157 +8,230 @@
     <script src="scripts/common.js"></script>
     <script src="scripts/basic.js"></script>
     <script src="https://d3js.org/d3.v5.min.js"></script>
-    <
-        script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.1"></script>
     <script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@0.7.4"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.1/js/ion.rangeSlider.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-colorschemes"></script>
     <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
+    
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <script src="https://unpkg.com/tippy.js@6"></script>
+    <script src="https://unpkg.com/@popperjs/core@2/dist/umd/popper.min.js"></script>
+    <script src="https://unpkg.com/tippy.js@6/dist/tippy-bundle.umd.js"></script>
 
 
     <!-- CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.1/css/ion.rangeSlider.min.css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.1/css/ion.rangeSlider.min.css" />
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="style/common.css">
     <link rel="stylesheet" type="text/css" href="style/basic.css">
-    
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
 </head>
 
 <!-- HTML -->
+
 <body>
-    <div class="container">
+
+    
         <div class="col1">
             <img class="logo" src="img/HistoryInDatalogolight.png">
+                
+
+                
+                
 
             <div style="width: 100%">
                 <h2 style="display: inline-block;">Data</h2>
-                <!-- <button id="clear" onclick="clearAllValues()" style="float: right; margin-left: 10px; margin-top: 30px;">CLEAR</button> -->
-                <button id="default" onclick="switchToDefault()" style="float: right; margin-left: 10px; margin-top: 30px;">DEFAULT</button>
-                <!-- <button id="modal-btn" onclick="displayModal()" style="float: right; margin-left: 10px; margin-top: 30px;">CUSTOM</button> -->
-                <div class="modal">
-                    <div class="modal-content">
-                        <span class="close-btn" onclick="closeModal()">&times;</span>
-                        <!-- <b>Database URL</b><input type="text" id="data_url"><button onclick="handleDataURL()">SUBMIT</button> -->
-                        <br>
-                        <form onsubmit="submitDrivingQuestions();return false">
-                            <!-- <label for="question"><b>Driving Question</b></label>
-                            <input type="file" id="driving_question_input" onchange="handleDrivingQuestionFiles(this.files)" accept=".csv"> -->
-                            <br>
-                            Select datasets this driving question applies to:
-                            <br>
-                            <fieldset>
-                                <legend>Life, Death, Populations</legend>
-                                <input type="checkbox" name="database_selection" value="Populations"> Populations <br>
-                                <input type="checkbox" name="database_selection" value="Population Female Percentage"> 
-                                    Population Female % <br>
-                                <input type="checkbox" name="database_selection" value="Population Female Percentage at Birth">
-                                    Population Female % at Birth<br>
-                                <input type="checkbox" name="database_selection" value="Life Expectancy - Continents">
-                                    Life Expectancy - Continents<br>
-                                <input type="checkbox" name="database_selection" value="Median Age">Median Age<br>
-                                <input type="checkbox" name="database_selection" value="Births">Births<br>
-                                <input type="checkbox" name="database_selection" value="Births Per Woman">Births Per Woman<br>
-                                <input type="checkbox" name="database_selection" value="Births Per 1000 People">
-                                    Births Per 1000 People<br>
-                                <input type="checkbox" name="database_selection" value="Child Deaths">Child Deaths<br>
-                                <input type="checkbox" name="database_selection" value="Child Mortality Rates">Child Mortality Rates<br>
-                                <input type="checkbox" name="database_selection" value="Survival Rate to Age 65 - Male">
-                                    Survival Rate to Age 65 - Male<br>
-                                <input type="checkbox" name="database_selection" value="Survival Rate to Age 65 - Female">
-                                    Survival Rate to Age 65 - Female<br>
-                            </fieldset>
-                            <fieldset>
-                                <legend>Military</legend>
-                                <input type="checkbox" name="database_selection" value="Military Personnel">Military Personnel<br>
-                                <input type="checkbox" name="database_selection" value="Military Personnel Percent of Population">
-                                    Military Personnel % Population<br>
-                                <input type="checkbox" name="database_selection" value="Military Spending">Military Spending<br>
-                                <input type="checkbox" name="database_selection" value="Military Spending Percent of GDP">
-                                    Military Spending % GDP<br>
-                            </fieldset>
-                            <fieldset>
-                                <legend>Economies</legend>
-                                <input type="checkbox" name="database_selection" value="GDP">GDP<br>
-                                <input type="checkbox" name="database_selection" value="GDP Per Capita">GDP Per Capita<br>
-                                <input type="checkbox" name="database_selection" value="Economic Freedom Scores">
-                                    Economic Freedom Scores<br>
-                            </fieldset>
-                            <fieldset>
-                                <legend>Environment</legend>
-                                <input type="checkbox" name="database_selection" value="CO2 Emissions">CO2 Emissions<br>
-                                <input type="checkbox" name="database_selection" value="CO2 Emissions Per Capita">
-                                    CO2 Emissions Per Capita<br>
-                                <input type="checkbox" name="database_selection" value="CO2 Emissions Percentages">
-                                    CO2 Emissions %<br>
-                                <input type="checkbox" name="database_selection" value="CO2 Emissions Cumulative">
-                                    CO2 Emissions Cumulative<br>
-                                <input type="checkbox" name="database_selection" value="CO2 Emissions Cumulative Percentages">
-                                    CO2 Emissions Cumulative %<br>
-                            </fieldset>
-                            <input type="submit" value="Submit" style="color: black"><br>
-                        </form>
-                    </div>
-                </div>
-                <!-- Driving Question Code: DG -->
-                <!-- <label><h4>Choose or Enter a Driving Question</h4>
-                    <input style="width:450px;" list="dq" name="myDq" />
-                </label> -->
-                <!-- <datalist style="width:700px" id="dq">
-                    <option>How do rates of population growth among countries in the same <p> region/continent compare? What explains observed differences?</p></option>
-                    <option value="Question 2"
-                    <option value="Question 3">
-                    <option value="Question 4">
-                    <option value="Question 5">
-                    <option value="Question 6">
-                </datalist> -->
-                
-                <form onSubmit="return false;">
-                    <label for="dqs">Choose a Driving Question:</label><br>
-                    <select style = "width:350px" id="textinput"  onchange="addDrivingQuestion()">
-                        <option value="" disabled selected>Select Driving Question</option>
-                        <option>How do rates of population growth among countries in the same region/continent compare? What explains observed differences?</option>
-                        <option>What accounts for sharp increases or decreases in military spending? Do increases in military spending seem to be cause, consequence, or deterrent of violent conflict? </option>
-                        <option>Is there a consistent relationship between child mortality rates and births per women? What explains consistencies and inconsistencies in this relationship across countries? </option>
-                        <option>How do CO2 emissions per capita compare among countries? What are the implications of similarities/differences for national/international policymaking?</option>
+<!--                 <button id="clear" onclick="clearAllValues()" style="float: right; margin-left: 10px; margin-top: 30px;">CLEAR</button>-->
+                <button id="default" onclick="switchToDefault()"
+                    style="float: right; margin-left: 10px; margin-top: 30px;">DEFAULT DATABASES</button>
+                 
+                 
+                 <button id="help" data-tooltip="" onclick="" style="float: right; margin-left: 10px; margin-top: 30px;">HELP</button>
+                 
+                 <button id="modal-btn" onclick="displayModal()" style="float: right; margin-left: 10px; margin-top: 30px;">ENTER DRIVING QUESTION</button>
 
-                    </select>
-                    <br>OR<br>
-                    <input style="width:350px" placeholder="Enter Driving Question here" id="textinput2" onkeypress="addDrivingQuestion2()"></input>
-                </form>
-                <div>
-                    <h3>Driving Question:</h3><p id="textEntered"></p>
+                 
+                 <script>
+                     
+                     tippy('#help', {
+                         placement: 'bottom',
+                         content: '<img src="help.gif" > ',
+                         allowHTML: true,
+                         maxWidth: '800px',
+                         animation: 'scale',
+
+                     });
+                     
+                     tippy('#default', {
+                            content: 'Return to default databases',
+                     });
+                     
+                 </script>
+              
+              
+              <div class="modal" id="modalbox">
+                    
+                    
+                    
+                    
+                    <div class="modal-content" id="content">
+                        <span class="close-btn" onclick="closeModal()">&times;</span>
+                       
+                       <div id="text">
+                       <label style="font-size: 30px"  for="dqs"> Select or Enter a Driving Question:</label><br>
+                      
+                       <label for="dqs">Select a Driving Question:</label>
+                       <span class="material-icons" id="tooltip1">help_outline</span> <br>
+                       <select style="width: 75%" id="textinput" onchange="addDrivingQuestion()">
+                           <option disabled selected>Select Driving Question</option>
+                           <option>How do rates of population growth among countries in the same region/continent compare?
+                               What explains observed differences?</option>
+                           <option>What accounts for sharp increases or decreases in military spending? Do increases in
+                               military spending seem to be cause, consequence, or deterrent of violent conflict? </option>
+                           <option>Is there a consistent relationship between child mortality rates and births per women?
+                               What explains consistencies and inconsistencies in this relationship across countries?
+                           </option>
+                           <option>How do CO2 emissions per capita compare among countries? What are the implications of
+                               similarities/differences for national/international policymaking?</option>
+
+                       </select>
+                       
+                       <br>OR<br>
+                       
+                       <label for="customDQ">Enter a Custom Driving Question:</label> <br>
+                       <input style="width: 65%" placeholder="Enter Driving Question here" id="textinput2"
+                           name="textinput2" value="" autocomplete="off" onkeyup="addDrivingQuestion2()"> <button id="help" data-tooltip="" onclick="clearDrivingQuestion(); addDrivingQuestion2()" >CLEAR</button></input>
+
+                           
+                       
+                       
+                       <br><br>
+
+                       <button  id="default" type="button" class=""  onclick="useAllDBs()"style="width:200px; float:center "> Use All Databases</button>
+                       
+                       <br><br>
+
+                       <label id="checkboxLabel"> All Databases: </label><br>
+                       
+                       
+                       <center >
+                           
+                           
+                       <div id="checkboxlist" >
+                           
+                           <label>
+                           <input type="checkbox" /> This is checkbox <br />
+                           </label>
+                           
+                               <input type="checkbox" /> This is checkbox <br />
+                               <input type="checkbox" /> This is checkbox <br />
+                               <input type="checkbox" /> This is checkbox <br />
+                               <input type="checkbox" /> This is checkbox <br />
+                               <input type="checkbox" /> This is checkbox <br />
+                               <input type="checkbox" /> This is checkbox <br />
+                               <input type="checkbox" /> This is checkbox <br />
+                       </div>
+                       
+                       
+                       <br><br>
+                       
+                       <label id="selectedDatabases"> Selected Databases: </label><span class="material-icons" id="tooltip2">help_outline</span> <br>
+                       
+                       
+                       <center>
+                           
+                       <div id="selectedList" >
+                           
+<!--                          this is the selected list div-->
+                        <label>
+                            No Selected Databases
+                        </label>
+                          
+                       </div>
+                       
+                       
+                       <br>
+                       
+                       <button  id="default" type="button" class=""  onclick="useSelected()"style="width:200px"> Use Selected Databases</button>
+                       
+                       <br><br>
+
+                       <!-- <button  id="default" type="button" class=""  onclick="closeModal()"style="width:200px; float:left"> Close </button> -->
+                       
+
+                       
+                       <br><br>
+                       </center>
+                   </form>
+                   
+                   
+                    </div>
+                       
+                    </div>
+                    
+                    
+                    
                 </div>
+
+
+                <div class="input">
+                    
+                <div>
+
+                    
+                    <h3 style="margin-top: 10px;font-size:30px;font-weight: bold;">Driving Question:</h3>
+                    
+                   
+                    <p id="textEntered">Not Selected</p>
+
+                    
+                </div>
+                
             </div>
-            <br>
+
+            
+           
+           </div>
+          
+          
+          <br>
+            
             <div class="row">
-                <h3 style="margin-top: 10px;">Graph 1:</h3>
+                <h3 style="margin-top: 10px;font-size:30px;font-weight: bold;">Graph 1:</h3>
 
 
                 <form>
                     Database (y-axis):
-                    <select name = "db" class="select" id="database1" onchange="verifyDB(1)">
+                    <select style="width:200px" name="db" class="select" id="database1" onchange="verifyDB(1)" >
                     </select>
                 </form>
 
-                <!-- <button id ="modal-btn" onclick="displayModal()" style="font-size:11px; line-height:180%;float: right; margin-left: 0px; margin-top: 0px;">CUSTOM</button> -->
+              
 
                 <p></p>
+                
 
                 Location:
                 <select name="loc" class="select" id="yaxis1" onchange="verifyOptions(1)">
                     <option value="" selected></option>
                 </select>
                 <p></p>
-                
+
                 Year Range (x-axis):
-                <div style="margin-left: 7px; width: 75%; display: inline-block;">
-                    <input  type="text" class="js-range-slider" id="range1" value=""/>
-                </div>
-                <p></p>
                 
+                <div style="margin-left: 7px; margin-top: 7px; width: 75%; display: inline-block;">
+                    <input type="text" class="js-range-slider" id="range1" value="" />
+                </div>
+                
+                <p></p>
+
                 <div style="display: inline-block; position: relative;">
                     Graph type:
                     <select name="gty" class="select" id="gtype1" onchange="verifyOptions(1)">
@@ -189,19 +262,19 @@
                         </div>
                     </div>
                 </div>
-                <p></p>         
+                <p></p>
 
                 <button class="submit" id="submit1" onclick="submitGraphData(1)">SUBMIT</button>
             </div>
             <p></p>
+            
             <div class="row">
-                <h3 style="margin-top: 10px;">Graph 2:</h3>
+                <h3 style="margin-top: 10px;font-weight: bold;font-size:30px">Graph 2:</h3>
 
                 Database (y-axis):
-                <select class="select" id="database2" onchange="verifyDB(2)">
+                <select style="width:200px" class="select" id="database2" onchange="verifyDB(2)" >
                 </select>
-                <!-- <button id ="modal-btn" onclick="displayModal()" style="font-size:11px; line-height:180%;float: right; margin-left: 0px; margin-top: 0px;">CUSTOM</button> -->
-
+                
                 <p></p>
 
                 Location:
@@ -211,11 +284,11 @@
                 <p></p>
 
                 Year Range (x-axis):
-                <div style="margin-left: 7px; width: 75%; display: inline-block;">
+                <div style="margin-left: 7px; margin-top: 7px; width: 75%; display: inline-block;">
                     <input type="text" class="js-range-slider" id="range2" value="" />
                 </div>
                 <p></p>
-                
+
                 <div style="display: inline-block; position: relative;">
                     Graph type:
                     <select class="select" id="gtype2" onchange="verifyOptions(2)">
@@ -247,12 +320,13 @@
                     </div>
                 </div>
                 <p></p>
-              
+
                 <button class="submit" id="submit2" onclick="submitGraphData(2)">SUBMIT</button>
             </div>
             <div id="themeToggle" style="margin-top: 5px;">
                 <c style="font-size: 12px;">Light</c>
-                OR<input type="checkbox" unchecked data-toggle="toggle" data-onstyle="primary" data-on=" " data-offstyle="info" data-off=" " data-size="sm" onchange="changeColorTheme(this)">
+                <input type="checkbox" unchecked data-toggle="toggle" data-onstyle="primary" data-on=" "
+                    data-offstyle="info" data-off=" " data-size="sm" onchange="changeColorTheme(this)">
                 <c style="font-size: 12px;">Dark</c>
             </div>
         </div>
@@ -261,31 +335,42 @@
             <h2>Graphs</h2>
             <div id="driving_question" style="font-size: 14px"></div>
 
-        
-
-
-            <div class="graphRegion" ondrop="drop(event, 'graph1')" ondragover="allowDrop(event)">
+            <div class="graphRegion" ondrop="drop(event, 'graph1')" ondragover="allowDrop(event)"
+                >
                 <canvas id="canvas1"></canvas>
-                <button class="saveButton" id="save1" draggable="true" ondragstart="drag(event, 'graph1')">SAVE GRAPH 1 (drag & drop)</button>
+                <button class="saveButton" id="save1" draggable="true" ondragstart="drag(event, 'graph1')">SAVE GRAPH 1
+                    
+
+                    <!--                <div class="hoverTip"> DRAG TO THE RIGHT TO SAVE GRAPH </div>-->
+                
+                </button>
                 <button class="export" id="export1" onclick="exportGraph(1);">EXPORT</button>
+                
+                <button class="saveButton" style="margin-left: 5px; cursor:pointer;" id="source1" onclick="displaySource(1)">SOURCE</button>
 
             </div>
 
             <br><br>
-            <div class="graphRegion" ondrop="drop(event, 'graph2')" ondragover="allowDrop(event)">
+            <div class="graphRegion" ondrop="drop(event, 'graph2')" ondragover="allowDrop(event)"
+               >
                 <canvas id="canvas2"></canvas>
-                <button class="saveButton" id="save2" draggable="true" ondragstart="drag(event, 'graph2')">SAVE GRAPH 2 (drag & drop)</button>
+                <button class="saveButton" id="save2" draggable="true" ondragstart="drag(event, 'graph2')">SAVE GRAPH 2
+                    </button>
                 <button class="export" id="export2" onclick="exportGraph(2);">EXPORT</button>
+                
+                <button class="saveButton" style="margin-left: 5px; cursor:pointer;" id="source2" onclick="displaySource(2)">SOURCE</button>
 
             </div>
         </div>
 
         <div class="col3">
             <div id="themeToggle" style="margin-top: 5px;">
-                <h2>Saved</h2>
+                <h2>Saved Graphs</h2> <span class="material-icons" id="tooltip3">help_outline</span> <br>
                 <p align="right">
+                    <button class="export" onclick="exportAll()">EXPORT ALL SAVED GRAPHS </button>
                     <c style="font-size: 20px;text-align:right">Add Notes</c>
-                    <input type="checkbox" unchecked data-toggle="toggle" data-onstyle="primary" data-on=" " data-offstyle="info" data-off=" " data-size="sm" onchange="addNotes(this)">
+                    <input type="checkbox" unchecked data-toggle="toggle" data-onstyle="primary" data-on=" "
+                        data-offstyle="info" data-off=" " data-size="sm" onchange="addNotes(this)">
                 </p>
             </div>
 
@@ -293,22 +378,29 @@
             <div class="pillar">
 
                 <div class="frame" id="frame1">
-                    <div class="tile" onclick="showToolTip(1)" ondrop="drop(event, 'saved1')" ondragover="allowDrop(event)">
-                        <div class="tooltiptext" id="tip1"></div>
-                        <canvas id="saved1"></canvas>
-                        <a id="exit1" class="exit" onclick="deleteGraph(1)">x
-                            <div class="hoverTip">delete</div>
-                        </a>
-                        <a id="swap1" class="swap" draggable="true" ondragstart="drag(event, 'saved1')">&#x21c4;
-                            <div class="hoverTip">transfer (drag & drop)</div>
-                        </a>
-                    </div>
-                </div>
+               <div class="tile" ondrop="drop(event, 'saved1')" ondragover="allowDrop(event)"
+                   onclick="showToolTip(1)">
+                   <div class="tooltiptext" id="tip1"></div>
+                   <canvas id="saved1"></canvas>
+                   <div class="hiddenInfo" id="hiddenInfo1" style="visibility: hidden;"></div>
+                   <a id="exit1" class="exit" onclick="deleteGraph(1)">x
+                       <div class="hoverTip">delete</div>
+                   </a>
+                   <a id="swap1" class="swap" draggable="true" ondragstart="drag(event, 'saved1')">&#x21c4;
+                       <div class="hoverTip">transfer (drag & drop)</div>
+                   </a>
+               </div>
+               <br>
+                   <button class="customize" id="cust1" onmouseover="showToolTip(1)" onmouseleave="showToolTip(1)" onclick="customize(1)"> Customize </button>
+           </div>
+                
 
                 <div class="frame">
-                    <div class="tile" onclick="showToolTip(2)" ondrop="drop(event, 'saved2')" ondragover="allowDrop(event)">
+                    <div class="tile" ondrop="drop(event, 'saved2')" ondragover="allowDrop(event)"
+                        onclick="showToolTip(2)">
                         <span class="tooltiptext" id="tip2"></span>
                         <canvas id="saved2"></canvas>
+                        <div class="hiddenInfo" id="hiddenInfo2" style="visibility: hidden;"></div>
                         <a id="exit2" class="exit" onclick="deleteGraph(2)">x
                             <div class="hoverTip">delete</div>
                         </a>
@@ -316,12 +408,16 @@
                             <div class="hoverTip">transfer (drag & drop)</div>
                         </a>
                     </div>
+                    <br>
+                        <button class="customize" id="cust2" onmouseover="showToolTip(2)" onmouseleave="showToolTip(2)" onclick="customize(2)"> Customize </button>
                 </div>
 
                 <div class="frame">
-                    <div class="tile" onclick="showToolTip(3)" ondrop="drop(event, 'saved3')" ondragover="allowDrop(event)">
+                    <div class="tile" ondrop="drop(event, 'saved3')" ondragover="allowDrop(event)"
+                        onclick="showToolTip(3)">
                         <span class="tooltiptext" id="tip3"></span>
                         <canvas id="saved3"></canvas>
+                        <div class="hiddenInfo" id="hiddenInfo3" style="visibility: hidden;"></div>
                         <a id="exit3" class="exit" onclick="deleteGraph(3)">x
                             <div class="hoverTip">delete</div>
                         </a>
@@ -329,12 +425,16 @@
                             <div class="hoverTip">transfer (drag & drop)</div>
                         </a>
                     </div>
+                    <br>
+                        <button class="customize" id="cust3" onmouseover="showToolTip(3)" onmouseleave="showToolTip(3)" onclick="customize(3)"> Customize </button>
                 </div>
 
-                <div class="frame" id="hide1" >
-                    <div class="tile" onclick="showToolTip(4)" ondrop="drop(event, 'saved4')" ondragover="allowDrop(event)">
+                <div class="frame" id="hide1">
+                    <div class="tile" ondrop="drop(event, 'saved4')" ondragover="allowDrop(event)"
+                        onclick="showToolTip(4)">
                         <span class="tooltiptext" id="tip4"></span>
                         <canvas id="saved4"></canvas>
+                        <div class="hiddenInfo" id="hiddenInfo4" style="visibility: hidden;"></div>
                         <a id="exit4" class="exit" onclick="deleteGraph(4)">x
                             <div class="hoverTip">delete</div>
                         </a>
@@ -342,12 +442,16 @@
                             <div class="hoverTip">transfer (drag & drop)</div>
                         </a>
                     </div>
+                    <br>
+                        <button class="customize" id="cust4" onmouseover="showToolTip(4)" onmouseleave="showToolTip(4)" onclick="customize(4)"> Customize </button>
                 </div>
 
-                <div class="frame" id="hide2" >
-                    <div class="tile" onclick="showToolTip(5)" ondrop="drop(event, 'saved5')" ondragover="allowDrop(event)">
+                <div class="frame" id="hide2">
+                    <div class="tile" ondrop="drop(event, 'saved5')" ondragover="allowDrop(event)"
+                        onclick="showToolTip(5)">
                         <span class="tooltiptext" id="tip5"></span>
                         <canvas id="saved5"></canvas>
+                        <div class="hiddenInfo" id="hiddenInfo5" style="visibility: hidden;"></div>
                         <a id="exit5" class="exit" onclick="deleteGraph(5)">x
                             <div class="hoverTip">delete</div>
                         </a>
@@ -355,14 +459,17 @@
                             <div class="hoverTip">transfer (drag & drop)</div>
                         </a>
                     </div>
+                    <br>
+                        <button class="customize" id="cust5" onmouseover="showToolTip(5)" onmouseleave="showToolTip(5)" onclick="customize(5)"> Customize </button>
                 </div>
             </div>
             <div class="pillar">
-
                 <div class="frame">
-                    <div class="tile" onclick="showToolTip(6)" ondrop="drop(event, 'saved6')" ondragover="allowDrop(event)">
+                    <div class="tile" ondrop="drop(event, 'saved6')" ondragover="allowDrop(event)"
+                        onclick="showToolTip(6)">
                         <span class="tooltiptext" id="tip6"></span>
                         <canvas id="saved6"></canvas>
+                        <div class="hiddenInfo" id="hiddenInfo6" style="visibility: hidden;"></div>
                         <a id="exit6" class="exit" onclick="deleteGraph(6)">x
                             <div class="hoverTip">delete</div>
                         </a>
@@ -370,12 +477,16 @@
                             <div class="hoverTip">transfer (drag & drop)</div>
                         </a>
                     </div>
+                    <br>
+                        <button class="customize" id="cust6" onmouseover="showToolTip(6)" onmouseleave="showToolTip(6)" onclick="customize(6)"> Customize </button>
                 </div>
 
                 <div class="frame">
-                    <div class="tile" onclick="showToolTip(7)" ondrop="drop(event, 'saved7')" ondragover="allowDrop(event)">
+                    <div class="tile" onclick="showToolTip(7)" ondrop="drop(event, 'saved7')"
+                        ondragover="allowDrop(event)">
                         <span class="tooltiptext" id="tip7"></span>
                         <canvas id="saved7"></canvas>
+                        <div class="hiddenInfo" id="hiddenInfo7" style="visibility: hidden;"></div>
                         <a id="exit7" class="exit" onclick="deleteGraph(7)">x
                             <div class="hoverTip">delete</div>
                         </a>
@@ -383,25 +494,33 @@
                             <div class="hoverTip">transfer (drag & drop)</div>
                         </a>
                     </div>
+                    <br>
+                        <button class="customize" id="cust7" onmouseover="showToolTip(7)" onmouseleave="showToolTip(7)" onclick="customize(7)"> Customize </button>
                 </div>
 
                 <div class="frame">
-                    <div class="tile" onclick="showToolTip(8)" ondrop="drop(event, 'saved8')" ondragover="allowDrop(event)">
+                    <div class="tile" onclick="showToolTip(8)" ondrop="drop(event, 'saved8')"
+                        ondragover="allowDrop(event)">
                         <span class="tooltiptext" id="tip8"></span>
                         <canvas id="saved8"></canvas>
+                        <div class="hiddenInfo" id="hiddenInfo8" style="visibility: hidden;"></div>
                         <a id="exit8" class="exit" onclick="deleteGraph(8)">x
                             <div class="hoverTip">delete</div>
                         </a>
                         <a id="swap8" class="swap" draggable="true" ondragstart="drag(event, 'saved8')">&#x21c4;
-                            <div class="hoverTip">transfer (drag & drop)</div>
+     M                       <div class="hoverTip">transfer (drag & drop)</div>
                         </a>
                     </div>
+                    <br>
+                        <button class="customize" id="cust8" onmouseover="showToolTip(8)" onmouseleave="showToolTip(8)" onclick="customize(8)"> Customize </button>
                 </div>
 
                 <div class="frame" id="hide3">
-                    <div class="tile" onclick="showToolTip(9)" ondrop="drop(event, 'saved9')" ondragover="allowDrop(event)">
+                    <div class="tile" onclick="showToolTip(9)" ondrop="drop(event, 'saved9')"
+                        ondragover="allowDrop(event)">
                         <span class="tooltiptext" id="tip9"></span>
                         <canvas id="saved9"></canvas>
+                        <div class="hiddenInfo" id="hiddenInfo9" style="visibility: hidden;"></div>
                         <a id="exit9" class="exit" onclick="deleteGraph(9)">x
                             <div class="hoverTip">delete</div>
                         </a>
@@ -409,12 +528,16 @@
                             <div class="hoverTip">transfer (drag & drop)</div>
                         </a>
                     </div>
+                    <br>
+                        <button class="customize" id="cust9" onmouseover="showToolTip(9)" onmouseleave="showToolTip(9)" onclick="customize(9)"> Customize </button>
                 </div>
 
                 <div class="frame" id="hide4">
-                    <div class="tile" onclick="showToolTip(10)" ondrop="drop(event, 'saved10')" ondragover="allowDrop(event)">
+                    <div class="tile" onclick="showToolTip(10)" ondrop="drop(event, 'saved10')"
+                        ondragover="allowDrop(event)">
                         <span class="tooltiptext" id="tip10"></span>
                         <canvas id="saved10"></canvas>
+                        <div class="hiddenInfo" id="hiddenInfo10" style="visibility: hidden;"></div>
                         <a id="exit10" class="exit" onclick="deleteGraph(10)">x
                             <div class="hoverTip">delete</div>
                         </a>
@@ -422,19 +545,110 @@
                             <div class="hoverTip">transfer (drag & drop)</div>
                         </a>
                     </div>
+                    <br>
+                        <button class="customize" id="cust10" onmouseover="showToolTip(10)" onmouseleave="showToolTip(10)" onclick="customize(10)"> Customize </button>
                 </div>
             </div>
 
             <!-- Notes code by DG -->
             <div id="myNotes" style="display:none;">
                 <h2>Notes</h2>
-                <textarea id="notes" rows="10" cols="40"></textarea>
+                
+                <button class="export" onclick="exportNotes()">EXPORT NOTE</button>
                 <br><br>
-            <button class="export"  onclick="exportNotes()">EXPORT NOTE</button>
+                <textarea id="notes" rows="8" cols="40" value=""></textarea>
+                
             </div>
 
         </div>
-    </div>
+    
+    <script>
+        //hover tool tip code
+        
+        tippy('#tooltip1', {
+               content: 'Based on your driving question, there will be suggested databases. Select the databases that can be used to answer your driving question.',
+               placement: "bottom",
+        });
+        
+        tippy('#tooltip2', {
+           content: "The databases that you select will populate the Y-Axis drop down menus.",
+           placement: "bottom",
+        });
+        
+        tippy('#tooltip3', {
+           content: "Click on the saved graphs to view the json code",
+           placement: "bottom",
+        });
+        
+        tippy('#save1', {
+           content: "Drag to an empty save slot to the right",
+           placement: "bottom",
+        });
+        
+        tippy('#save2', {
+           content: "Drag to an empty save slot to the right",
+           placement: "bottom",
+        });
+        
+        tippy('#source1', {
+           content: "View the source for the database",
+           placement: "bottom",
+        });
+        
+        tippy('#source2', {
+           content: "View the source for the database",
+           placement: "bottom",
+        });
+        
+        
+        tippy('#cust1', {
+           content: "Modify the json code in the scripting version of DV4L",
+           placement: "bottom",
+        });
+        tippy('#cust2', {
+           content: "Modify the json code in the scripting version of DV4L",
+           placement: "bottom",
+        });
+        tippy('#cust3', {
+           content: "Modify the json code in the scripting version of DV4L",
+           placement: "bottom",
+        });
+        tippy('#cust4', {
+           content: "Modify the json code in the scripting version of DV4L",
+           placement: "bottom",
+        });
+        tippy('#cust5', {
+           content: "Modify the json code in the scripting version of DV4L",
+           placement: "bottom",
+        });
+        tippy('#cust6', {
+           content: "Modify the json code in the scripting version of DV4L",
+           placement: "bottom",
+        });
+        tippy('#cust7', {
+           content: "Modify the json code in the scripting version of DV4L",
+           placement: "bottom",
+        });
+        tippy('#cust8', {
+           content: "Modify the json code in the scripting version of DV4L",
+           placement: "bottom",
+        });
+        tippy('#cust9', {
+           content: "Modify the json code in the scripting version of DV4L",
+           placement: "bottom",
+        });
+        tippy('#cust10', {
+           content: "Modify the json code in the scripting version of DV4L",
+           placement: "bottom",
+        });
+        
+        
+        
+        
+    </script>
+
 </body>
 
 </html>
+
+
